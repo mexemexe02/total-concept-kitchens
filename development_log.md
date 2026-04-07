@@ -476,6 +476,16 @@
 
 ---
 
+## 2026-04-07 — Local vs live look: lock light page shell
+
+### Cause
+- `globals.css` used `@media (prefers-color-scheme: dark)` to set `--background` / `--foreground` on **`:root`**, so the **whole body** went near-black on Windows dark mode while many blocks still used light cream / mixed `dark:` utilities → muddy local preview. Phones or light-mode browsers often showed the intended cream shell (“live looks more impressive”).
+
+### Changes
+- Removed that `:root` dark override; set **`html { color-scheme: light; }`** so the default shell matches the brand. Per-component **`dark:`** classes unchanged.
+
+---
+
 ## 2026-04-07 — SEO: sitemap, robots, canonicals (skills: seo-fundamentals)
 
 ### Changes
