@@ -1,0 +1,13 @@
+# THE HUMBERTO SYSTEM: Universal AI Context
+Our Master Knowledge Base is located at: V:\AI-Knowledge-Base\
+
+## How to use my Knowledge:
+- **Project Context**: For this specific app's logic, refer to @V:\AI-Knowledge-Base\Project-Specs\[ProjectName]
+- **Coding Standards**: For Next.js, Tailwind, or AI patterns, refer to @V:\AI-Knowledge-Base\Framework-Rules
+- **Personal Preferences**: For my style, music, and goals, refer to @V:\AI-Knowledge-Base\Personal-Style
+- **Active Tasks**: Always check @V:\AI-Knowledge-Base\Active-Memory\session_log.md to see where we left off.
+
+## Critical Instructions:
+1. NEVER attempt to read the entire V:\AI-Knowledge-Base directory at once (prevents 50MB overflow).
+2. When saving a new skill or updating a rule, write directly to the absolute path on the V: drive.
+3. Treat the files in V:\AI-Knowledge-Base as the "Single Source of Truth."

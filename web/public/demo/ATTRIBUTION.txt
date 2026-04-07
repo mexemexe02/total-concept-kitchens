@@ -1,0 +1,13 @@
+Demo photography (Total Concept Kitchens presentation site)
+-------------------------------------------------------------
+These JPEGs were downloaded from Unsplash (https://unsplash.com) for local demo use.
+
+Unsplash License: https://unsplash.com/license
+(Free to use; no permission required; attribution appreciated but not required.)
+
+Source photo IDs (Unsplash):
+- hero-kitchen.jpg, gallery-03.jpg: photo-1600585154526-990dced4db0d
+- gallery-01.jpg: photo-1600585154340-be6161a56a0c
+- gallery-02.jpg: photo-1600566753190-17f0baa2a6c3
+
+Replace these files with Ethan’s own project photography before public launch if preferred.

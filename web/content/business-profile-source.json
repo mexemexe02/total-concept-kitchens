@@ -1,0 +1,135 @@
+{
+  "businessName": "Total Concept Kitchens",
+  "category": "Home Improvement",
+  "capturedAt": "2026-04-05",
+  "sources": [
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/totalconceptkitchens/",
+      "handle": "@totalconceptkitchens"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/p/Total-Concept-Kitchens-100031038951078/"
+    }
+  ],
+  "contact": {
+    "phoneDisplay": "(705) 309-4443",
+    "phoneE164": "+17053094443",
+    "email": "totalconceptkitchens@gmail.com"
+  },
+  "address": {
+    "street": "438 Dunlop St W",
+    "city": "Barrie",
+    "region": "Ontario",
+    "postalCode": "L4N 1C2",
+    "country": "Canada",
+    "singleLine": "438 Dunlop St W, Barrie, Ontario L4N 1C2"
+  },
+  "messaging": {
+    "facebookMessenger": "Total Concept Kitchens (via Facebook Page Message button)"
+  },
+  "instagramBio": {
+    "lines": [
+      "Handmade custom cabinetry",
+      "Serving Simcoe county, Muskoka & surrounding areas"
+    ],
+    "fullTextSuggested": "Handmade custom cabinetry. Serving Simcoe County, Muskoka & surrounding areas."
+  },
+  "serviceAreaKeywords": [
+    "Simcoe County",
+    "Muskoka",
+    "Barrie",
+    "Lake Dalrymple",
+    "Kushog Lake",
+    "Elmvale",
+    "Springwater"
+  ],
+  "instagram": {
+    "postsCount": 84,
+    "followersCount": 661,
+    "followingCount": 570,
+    "storyHighlights": [
+      { "name": "Fireplaces", "note": "Highlight reel on IG" },
+      { "name": "Reviews ⭐️", "note": "Highlight reel on IG" }
+    ]
+  },
+  "facebook": {
+    "followersCount": 58,
+    "followingCount": 0,
+    "reviewCount": 1,
+    "reviewerNameVisible": "Rae Boucher Barr",
+    "note": "Open Reviews on the Page for full text; do not invent quotes."
+  },
+  "recentContentIdeas": [
+    {
+      "title": "Project Dalrymple Lodge",
+      "dateNote": "March 21 (year from FB feed when captured)",
+      "locationMention": "Lake Dalrymple",
+      "note": "Use as case-study or gallery caption seed — confirm details with owner."
+    }
+  ],
+  "brandNotes": {
+    "logo": "Stylized T (black) + C (cyan / bright blue); wordmark TOTAL CONCEPT KITCHENS. File: public/brand/logo.png",
+    "paletteHint": "Consider aligning accent with logo cyan for buttons/links where it fits the existing bronze palette."
+  },
+  "siteAssets": {
+    "localGalleryImages": "/social/ig-01.jpg through ig-06.jpg, hero /social/hero-ig.jpg",
+    "attributionFile": "public/social/ATTRIBUTION.txt"
+  },
+  "instagramPostCaptions": [
+    {
+      "permalink": "https://www.instagram.com/p/DMdjufgOvQs/",
+      "author": "totalconceptkitchens",
+      "locationNote": "Elmvale, Ontario",
+      "caption": "Showstopper! From the 15' vaulted ceilings & exposed beams, to the 10'x 5' island & 6' (that's right) 6 foot tall custom hood range! This kitchen is an entertainers dream!"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DIjCmOoub2a/",
+      "author": "artisan.construction.reno",
+      "note": "Repost on TCK grid — partner caption",
+      "caption": "The galia transformation is complete - and this major renovation is stunning from every angle! Our clients home now tells a new story and it's one we're proud to be a part of!"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DLVJ11ItBh-/",
+      "author": "artisan.construction.reno",
+      "note": "Repost",
+      "caption": "Straight out of a magazine — this kitchen is what dreams (and dinner parties) are made of!"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DNk3AoNuIuu/",
+      "author": "totalconceptkitchens",
+      "locationNote": "Barrie, Ontario",
+      "caption": "Soft, inviting & timeless tones throughout the space make you feel welcomed the second you walk through the door. We love how this one came together!"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DWJoek0joZm/",
+      "author": "totalconceptkitchens",
+      "locationNote": "Lake Dalrymple",
+      "caption": "Project Dalrymple Lodge"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DMbbT5KuoBK/",
+      "author": "totalconceptkitchens",
+      "locationNote": "Midhurst, Ontario",
+      "caption": "All wrapped up for some incredible clients at this stunning Midhurst home 🏠🤩"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DVyu6yVjobO/",
+      "author": "totalconceptkitchens",
+      "locationNote": "Barrie, Ontario",
+      "caption": "Not sure what to do with that empty wall space ? We've got you covered! Loving these custom reeded fronts 🔥"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DUogenljoOq/",
+      "author": "totalconceptkitchens",
+      "caption": "Excited to add a new addition to the team! If you're interested in learning the ins & outs of cabinet making in a skilled, team oriented environment, please email us today at totalconceptkitchens@gmail.com"
+    },
+    {
+      "permalink": "https://www.instagram.com/p/DT-poocDoIA/",
+      "author": "artisan.construction.reno",
+      "locationNote": "Orillia, Ontario",
+      "caption": "Cabinet reface with @totalconceptkitchens 💕"
+    }
+  ]
+}

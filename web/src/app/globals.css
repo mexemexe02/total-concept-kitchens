@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f7f5f0;
+  --foreground: #1c1b19;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0c0b0a;
+    --foreground: #f2efe9;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Display serif for headings site-wide — body stays Geist */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), var(--font-geist-sans), Georgia, serif;
+  }
+}
+
+/* Bronze-tinted selection — small “designed” detail on text highlights */
+::selection {
+  background: rgba(154, 123, 79, 0.35);
+  color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

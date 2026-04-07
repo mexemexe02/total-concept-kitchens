@@ -1,0 +1,11 @@
+{
+  "name": "total-concept-kitchens",
+  "private": true,
+  "description": "Next.js app lives in web/. Dev server uses port 3012 (avoids 3000–3010).",
+  "scripts": {
+    "dev": "npm run dev --prefix web",
+    "build": "npm run build --prefix web",
+    "start": "npm run start --prefix web",
+    "lint": "npm run lint --prefix web"
+  }
+}
