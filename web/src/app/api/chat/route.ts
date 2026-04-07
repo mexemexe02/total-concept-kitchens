@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import faqBank from "@/data/mise-faq.json";
+import { getCustomMiseFaq } from "@/lib/mise-custom-faq";
 import { MISE_FALLBACK, MISE_OPENERS, MISE_GREETING_DEFAULT } from "@/lib/mise-personality";
 import { findBestFaqMatch } from "@/lib/mise-match";
 import type { MiseFaqRow } from "@/lib/mise-types";
@@ -8,7 +9,7 @@ import { siteConfig } from "@/lib/site-config";
 
 export const runtime = "nodejs";
 
-const bank = faqBank as MiseFaqRow[];
+const staticBank = faqBank as MiseFaqRow[];
 
 function openerFor(text: string): string {
   let h = 0;
@@ -29,6 +30,9 @@ export async function POST(req: Request) {
   }
 
   const portal = await getPortalSettings();
+  const custom = await getCustomMiseFaq();
+  // Custom rows first so equal scores prefer Ethan's answers over generated FAQ.
+  const bank: MiseFaqRow[] = [...custom, ...staticBank];
   const match = findBestFaqMatch(message, bank);
 
   if (match) {

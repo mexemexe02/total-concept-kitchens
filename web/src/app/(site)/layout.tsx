@@ -9,7 +9,7 @@ import { SkipLink } from "@/components/site/SkipLink";
  * Shared chrome for every marketing route — same as a live multi-page site
  * (header + footer on each URL), plus pro touches: JSON-LD, skip link, breadcrumbs, scroll control.
  */
-export default function SiteLayout({
+export default async function SiteLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

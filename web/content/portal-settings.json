@@ -2,5 +2,15 @@
   "announcementBanner": null,
   "chatGreeting": null,
   "chatFooterNote": null,
-  "updatedAt": null
+  "updatedAt": null,
+  "heroEyebrow": null,
+  "heroHeadline": null,
+  "heroSupporting": null,
+  "heroTrustLine": null,
+  "businessHoursLine": null,
+  "reviewPageUrl": null,
+  "contactPageIntro": null,
+  "contactExtraNote": null,
+  "footerTagline": null,
+  "ownerPrivateNotes": null
 }

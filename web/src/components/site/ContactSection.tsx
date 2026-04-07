@@ -2,16 +2,27 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { SocialLinks } from "@/components/site/SocialLinks";
 import { siteConfig } from "@/lib/site-config";
 
+type ContactSectionProps = {
+  /** Optional note from portal — appears above the consultation heading. */
+  contactExtraNote?: string | null;
+};
+
 /**
  * Dedicated contact page body: structured methods (phone, email, location) plus
  * consultation copy. No implementation notes here — those belong in README / .env.example.
  */
-export function ContactSection() {
+export function ContactSection({ contactExtraNote }: ContactSectionProps = {}) {
   const mailtoConsult = `mailto:${siteConfig.email}?subject=${encodeURIComponent("Kitchen consultation request")}`;
+  const extra = contactExtraNote?.trim();
 
   return (
     <section className="bg-cream py-20 dark:bg-stone-950">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {extra ? (
+          <p className="mb-10 max-w-2xl rounded-xl border border-bronze/25 bg-bronze/5 px-5 py-4 text-sm leading-relaxed text-stone-700 dark:border-bronze/30 dark:bg-bronze/10 dark:text-stone-200">
+            {extra}
+          </p>
+        ) : null}
         <div className="max-w-2xl">
           {/*
             Section H2 scale matches Services / Process / Gallery grids site-wide.
@@ -68,12 +79,18 @@ export function ContactSection() {
             <span className="mt-4 text-xs font-semibold uppercase tracking-widest text-stone-500 dark:text-stone-400">
               Email
             </span>
-            <a
-              href={mailtoConsult}
-              className="mt-2 min-w-0 text-base font-semibold leading-snug text-charcoal transition hover:text-bronze [overflow-wrap:anywhere] dark:text-cream dark:hover:text-bronze-light sm:text-lg"
-            >
-              {siteConfig.email}
-            </a>
+            {/*
+              Keep the full address on one line (no mid-string breaks). Narrow viewports
+              scroll horizontally inside the card instead of wrapping or clipping.
+            */}
+            <div className="mt-2 min-w-0 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]">
+              <a
+                href={mailtoConsult}
+                className="inline-block whitespace-nowrap text-base font-semibold text-charcoal transition hover:text-bronze dark:text-cream dark:hover:text-bronze-light sm:text-lg"
+              >
+                {siteConfig.email}
+              </a>
+            </div>
             <p className="mt-3 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
               Best for photos, measurements, and follow-up details.
             </p>

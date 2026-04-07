@@ -4,7 +4,7 @@ import { Header } from "@/components/site/Header";
 import { SkipLink } from "@/components/site/SkipLink";
 
 /** 404 uses root layout only — repeat site chrome so it matches other pages. */
-export default function NotFound() {
+export default async function NotFound() {
   return (
     <>
       <SkipLink />

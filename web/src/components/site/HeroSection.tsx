@@ -4,6 +4,7 @@ import Image from "next/image";
 import { HeroAnimatedCopy } from "@/components/site/HeroAnimatedCopy";
 import { demoHero } from "@/lib/demo-content";
 import { fallbackGalleryItems } from "@/lib/gallery-fallback";
+import { getPortalSettings } from "@/lib/portal-settings";
 import { siteConfig } from "@/lib/site-config";
 
 /**
@@ -55,9 +56,15 @@ function resolveHeroAsset(cwd: string): HeroAsset {
 }
 
 export async function HeroSection() {
+  const portal = await getPortalSettings();
   const { src: heroSrc, alt: heroAlt, local: useLocal } = resolveHeroAsset(
     process.cwd(),
   );
+
+  const eyebrow = portal.heroEyebrow?.trim() || demoHero.eyebrow;
+  const headline = portal.heroHeadline?.trim() || demoHero.headline;
+  const supporting = portal.heroSupporting?.trim() || demoHero.supporting;
+  const trustLine = portal.heroTrustLine?.trim() || demoHero.trustLine;
 
   return (
     <section className="relative overflow-hidden bg-charcoal text-cream">
@@ -99,10 +106,10 @@ export async function HeroSection() {
       <HeroAnimatedCopy
         welcomePrefix="Welcome to"
         companyName={siteConfig.name}
-        eyebrow={demoHero.eyebrow}
-        headline={demoHero.headline}
-        supporting={demoHero.supporting}
-        trustLine={demoHero.trustLine}
+        eyebrow={eyebrow}
+        headline={headline}
+        supporting={supporting}
+        trustLine={trustLine}
       />
     </section>
   );

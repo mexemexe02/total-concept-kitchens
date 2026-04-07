@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactSection } from "@/components/site/ContactSection";
 import { PageHeader } from "@/components/site/PageHeader";
 import { marketingPageMeta } from "@/lib/page-metadata";
+import { getPortalSettings } from "@/lib/portal-settings";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -10,14 +11,17 @@ export const metadata: Metadata = {
   ...marketingPageMeta("/contact"),
 };
 
-export default function ContactPage() {
+const DEFAULT_CONTACT_INTRO =
+  "Ask a question or request a consultation. We respond with clear next steps and available times.";
+
+export default async function ContactPage() {
+  const portal = await getPortalSettings();
+  const intro = portal.contactPageIntro?.trim() || DEFAULT_CONTACT_INTRO;
+
   return (
     <main id="main-content" tabIndex={-1} className="outline-none">
-      <PageHeader
-        title="Contact us"
-        description="Ask a question or request a consultation. We respond with clear next steps and available times."
-      />
-      <ContactSection />
+      <PageHeader title="Contact us" description={intro} />
+      <ContactSection contactExtraNote={portal.contactExtraNote} />
     </main>
   );
 }

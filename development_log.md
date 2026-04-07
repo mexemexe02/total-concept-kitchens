@@ -1,5 +1,27 @@
 # Development log — Total Concept Kitchens
 
+## 2026-04-05 — Mise custom Q&A (portal + `content/mise-custom-faq.json`)
+
+### Why
+- Ethan can add exact question/answer pairs without editing the large generated `mise-faq.json` or redeploying FAQ generation.
+
+### What shipped
+- **`web/content/mise-custom-faq.json`** — JSON array of `{ id, q, a, tags? }`; committed default `[]`.
+- **`web/src/lib/mise-custom-faq.ts`** — `getCustomMiseFaq`, `saveCustomMiseFaq`, `parseCustomFaqJson`; save rewrites ids as **-1, -2, …** to avoid clashing with positive ids in `src/data/mise-faq.json`.
+- **`GET/POST /api/portal/mise-faq`** — same cookie auth as portal settings.
+- **`/api/chat`** — builds `bank = [...custom, ...static]` so custom rows are evaluated first (tie-breaking in matcher favors earlier rows).
+- **Portal** — section **11 · Mise custom Q&A**: add/remove rows, optional comma-separated tags, **Save Mise Q&A** (separate from “Save all changes”). Load runs `settings` + `mise-faq` in parallel after login.
+- **Tests** — `web/src/lib/mise-custom-faq.test.ts` for `parseCustomFaqJson`.
+
+### Verify
+- `cd web && npm run test -- --run` and `npm run build` — OK.
+- Local: sign in at `/portal`, add a pair, save; ask Mise the same question; response should use your answer when overlap score clears the threshold.
+
+### Deploy note
+- Coolify (or any Docker host) must persist **`web/content/`** writable if Ethan saves from production — same as `portal-settings.json`.
+
+---
+
 ## 2026-04-07 — Next.js `web/` app wired and dev server
 
 ### Problem
@@ -473,6 +495,52 @@
 
 ### Verify
 - Superseded: hero now uses **Ethan’s `ig-*` order only** (see next log entry).
+
+---
+
+## 2026-04-07 — Vitest unit tests (lib only)
+
+### Why Vitest (not Playwright first)
+- Fast CI-friendly checks on **pure helpers** without browser infra. E2E can be added later if needed.
+
+### Changes
+- **`vitest`**, **`vitest.config.ts`** (`@` alias, `src/**/*.test.ts`).
+- **`gallery-dedupe.test.ts`:** `mediaKeyForSrc`, `dedupeGalleryItemsBySrc`.
+- **`utils.test.ts`:** `cn` / tailwind-merge behavior.
+- **`package.json`:** `test` / `test:watch`; root **`test`** delegates to `web`.
+
+### Verify
+- `cd web && npm run test` — 7 tests.  
+- `npm run test` from repo root.
+
+---
+
+## 2026-04-07 — Portal: 10 owner-facing controls
+
+### Features (Ethan)
+1. Site-wide **announcement banner**  
+2. **Mise** greeting + footer note  
+3–6. **Home hero** eyebrow, headline, supporting paragraph, trust line  
+7. **Hours** line (footer + overrides env when set)  
+8. **Reviews URL** → “Leave us a review” in footer  
+9. **Contact page** subtitle + optional highlight note above cards  
+10. **Footer tagline** + **private notes** (portal-only, never on public site)
+
+### Code
+- **`PortalSettings`** extended in `mise-types.ts`; **`portal-defaults.ts`** (client-safe); **`portal-mutable-keys.ts`** for API merge.
+- **`portal-settings.ts`** merge/save; **`HeroSection`**, async **`Footer`**, **`ContactPage`** + **`ContactSection`** read overrides.
+- **`PortalClient`** grouped UI; **`(site)/layout`** + **`not-found`** async for async `Footer`.
+- **`content/portal-settings.json`** full schema with nulls.
+
+### Verify
+- Sign in `/portal`, edit fields, Save — confirm home/contact/footer update. Private notes never appear on marketing pages.
+
+---
+
+## 2026-04-07 — Contact page: email on one line
+
+### Changes
+- **`ContactSection`:** Removed `[overflow-wrap:anywhere]` (was breaking the address mid-string). Email link uses **`whitespace-nowrap`** inside a **`overflow-x-auto`** wrapper so the full address stays one line; tiny screens can scroll horizontally in the card.
 
 ---
 

@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { SocialLinks } from "@/components/site/SocialLinks";
+import { getPortalSettings } from "@/lib/portal-settings";
 import { siteConfig } from "@/lib/site-config";
 
-export function Footer() {
+export async function Footer() {
+  const portal = await getPortalSettings();
   const year = new Date().getFullYear();
+  const tagline = portal.footerTagline?.trim() || siteConfig.tagline;
+  const hoursLine =
+    portal.businessHoursLine?.trim() || siteConfig.hours || null;
+  const reviewUrl = portal.reviewPageUrl?.trim() || null;
+
   return (
     <footer className="border-t border-stone-200 bg-stone-100 py-12 dark:border-stone-800 dark:bg-charcoal">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
@@ -12,7 +19,7 @@ export function Footer() {
             {siteConfig.name}
           </p>
           <p className="mt-2 max-w-xs text-sm text-stone-600 dark:text-stone-400">
-            {siteConfig.tagline}
+            {tagline}
           </p>
         </div>
         <div>
@@ -46,9 +53,9 @@ export function Footer() {
               {siteConfig.city}, {siteConfig.region}{" "}
               {siteConfig.postalCode}
             </li>
-            {siteConfig.hours ? (
+            {hoursLine ? (
               <li className="text-xs text-stone-500 dark:text-stone-500">
-                {siteConfig.hours}
+                {hoursLine}
               </li>
             ) : null}
             <li className="pt-1 text-xs leading-snug text-stone-500 dark:text-stone-500">
@@ -82,6 +89,18 @@ export function Footer() {
             .
           </p>
           <SocialLinks variant="footer" className="mt-4" />
+          {reviewUrl ? (
+            <p className="mt-4 text-sm">
+              <a
+                href={reviewUrl}
+                className="font-medium text-bronze hover:underline dark:text-bronze-light"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leave us a review
+              </a>
+            </p>
+          ) : null}
         </div>
         <div className="sm:col-span-2 lg:col-span-1">
           <p className="text-sm font-medium text-charcoal dark:text-cream">
