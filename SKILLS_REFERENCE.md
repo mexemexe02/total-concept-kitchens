@@ -1,7 +1,9 @@
-# Cursor Skills Reference for Schedulo
+# Cursor Skills Reference (Schedulo + Total Concept Kitchens)
 
-**Last updated:** 2026-03-29  
+**Last updated:** 2026-04-07  
 **Global repo HEAD:** `c729a410` — [antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills) (`main`)
+
+**Projects using this doc:** Schedulo; **Total Concept Kitchens** (`web/` Next.js site) — same global skill folders below.
 
 ## Where skills live
 
@@ -18,7 +20,11 @@
 
 ---
 
-## Schedulo: high-value skills (paths under `skills/`)
+## High-value skills (paths under `skills/`)
+
+Use for TCK web work: **`seo-fundamentals`**, **`seo-audit`**, **`web-performance-optimization`**, **`frontend-dev-guidelines`**, **`react-best-practices`**, **`lint-and-validate`**.
+
+### Schedulo-focused (still useful for any full-stack app)
 
 | Topic | Folder under `skills/` |
 |-------|-------------------------|
@@ -68,4 +74,4 @@ python generate_index.py
 
 ## Project doc only
 
-This file lives in **Schedulo** (`.cursor/SKILLS_REFERENCE.md`). Updating global skills does not change git in Schedulo—only this reference and `development_log.md` when we record the sync.
+This file may live in **Schedulo** or **Total Concept Kitchens** repo roots. Updating global skills does not change project git—only this reference and `development_log.md` when we record the sync.

@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { SkipLink } from "@/components/site/SkipLink";
 
 /** 404 uses root layout only — repeat site chrome so it matches other pages. */
 export default function NotFound() {
   return (
     <>
+      <SkipLink />
       <Header />
-      <main className="min-h-[50vh] bg-cream px-4 py-24 text-center dark:bg-stone-950 sm:px-6">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="min-h-[50vh] bg-cream px-4 py-24 text-center outline-none dark:bg-stone-950 sm:px-6"
+      >
         <p className="text-sm font-medium uppercase tracking-widest text-bronze">
           404
         </p>

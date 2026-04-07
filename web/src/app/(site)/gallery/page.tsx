@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { GalleryGrid } from "@/components/site/GalleryGrid";
 import { PageHeader } from "@/components/site/PageHeader";
 import { getGalleryData } from "@/lib/get-gallery-items";
+import { marketingPageMeta } from "@/lib/page-metadata";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Gallery",
   description: `Kitchen project photos and finishes from ${siteConfig.name}.`,
+  ...marketingPageMeta("/gallery"),
 };
 
 /** Revalidate this route periodically so Instagram-backed tiles refresh without redeploying. */
@@ -16,7 +18,7 @@ export default async function GalleryPage() {
   const { items, source, usingRemotePlaceholders } = await getGalleryData();
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1} className="outline-none">
       <PageHeader
         title="Gallery"
         description={

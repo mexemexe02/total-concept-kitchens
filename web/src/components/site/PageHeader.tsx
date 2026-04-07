@@ -15,7 +15,8 @@ export function PageHeader({
         so inner pages feel like one system with the home page, not a separate template.
       */}
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
-        <h1 className="text-3xl font-semibold tracking-tight text-charcoal dark:text-cream sm:text-4xl md:text-5xl">
+        {/* Bronze rule ties inner pages to the hero’s editorial system without copying the dark hero band */}
+        <h1 className="border-l-[3px] border-bronze/55 pl-5 font-display text-3xl font-semibold tracking-tight text-charcoal dark:border-bronze/50 dark:text-cream sm:pl-6 sm:text-4xl md:text-5xl">
           {title}
         </h1>
         {description ? (

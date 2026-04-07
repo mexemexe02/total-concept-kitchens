@@ -476,6 +476,38 @@
 
 ---
 
+## 2026-04-07 — SEO: sitemap, robots, canonicals (skills: seo-fundamentals)
+
+### Changes
+- **`app/sitemap.ts`:** Marketing URLs from `siteConfig.url` + priorities / changeFrequency.
+- **`app/robots.ts`:** `allow /`, `disallow /portal`, `/api/`, `sitemap` URL.
+- **`lib/page-metadata.ts`:** `marketingPageMeta(path)` → `alternates.canonical` (avoids clobbering root `openGraph`).
+- **Home + inner pages:** Spread `marketingPageMeta` into each `metadata` export.
+- **`SKILLS_REFERENCE.md`:** TCK called out; high-value skills listed for web/SEO/perf.
+
+### Verify
+- `npm run build` → `/sitemap.xml`, `/robots.txt` generated.
+- Production: `NEXT_PUBLIC_SITE_URL` must be the live origin so sitemap/robots/canonicals are correct.
+
+---
+
+## 2026-04-07 — Pro polish (all marketing pages)
+
+### Added
+- **`SkipLink`:** “Skip to main content” — keyboard / SR bypass (WCAG); on 404 too.
+- **`SiteJsonLd`:** `LocalBusiness` + `WebSite` structured data from `siteConfig` (NAP, sameAs, area served).
+- **`Breadcrumbs`:** Home + path (hidden on `/`); `aria-label`, `aria-current` on current page.
+- **`ScrollToTop`:** After ~400px scroll, **bottom-left** (avoids Mise bottom-right); respects reduced motion.
+- **`PageHeader`:** Bronze left rule + display font on inner-page H1s.
+- **`main id="main-content"`** on all `(site)` pages + `not-found`.
+
+### Verify
+- Tab from load: skip link appears; Enter → focus lands in main.
+- Rich Results Test / View Source: JSON-LD script present.
+- Inner route: breadcrumb matches URL; scroll long page → back-to-top.
+
+---
+
 ## 2026-04-07 — Header height: room for logo ring / glow
 
 ### Changes

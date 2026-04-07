@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/site/PageHeader";
+import { marketingPageMeta } from "@/lib/page-metadata";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "About",
   description: `Meet ${siteConfig.name} — custom kitchen design, cabinetry, and installation in Simcoe County and area.`,
+  ...marketingPageMeta("/about"),
 };
 
 export default function AboutPage() {
   return (
-    <main>
+    <main id="main-content" tabIndex={-1} className="outline-none">
       <PageHeader
         title={`About ${siteConfig.name}`}
         description="Kitchen projects are a major investment. We earn trust with clear communication, reliable scheduling, and installation quality you can see in the details."
