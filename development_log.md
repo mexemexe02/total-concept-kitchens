@@ -448,6 +448,65 @@
 
 ---
 
+## 2026-04-07 — Home hero: welcome line + kitchen fallback image
+
+### Changes
+- **`HeroAnimatedCopy`:** “Welcome to” + **`siteConfig.name`** above the existing eyebrow/headline (reduced-motion + animated paths).
+- **`HeroSection`:** Remote hero Unsplash swap from `photo-1556911220…` (read as non-kitchen) to **`photo-1556909114…`** (clear kitchen island/cabinetry).
+- **`gallery-fallback-remote.ts`:** First placeholder tile uses the same kitchen image for consistency.
+
+### Verify
+- `npm run dev` → home hero shows welcome + company name; background reads as kitchen when `hero-ig.jpg` absent.
+
+---
+
+## 2026-04-07 — Home hero: stop using `hero-ig.jpg` (wrong room); prioritize real kitchen assets
+
+### Cause
+- **`public/social/hero-ig.jpg`** was still chosen whenever present; it read as a bathroom to stakeholders, not a kitchen.
+
+### Changes
+- **`HeroSection`:** Resolve hero as **`/demo/hero-kitchen.jpg`** → else **`/social/ig-01.jpg`** → else Unsplash **`photo-1600607687939…`** (minimal kitchen + island). **`hero-ig.jpg` is no longer used** for the hero.
+- Removed the old “hero path must not match gallery fallback list” guard (hero may reuse `ig-01` — acceptable).
+- **`ATTRIBUTION.txt`:** Documents the new order; notes `hero-ig.jpg` is unused by hero.
+- **`gallery-fallback-remote.ts`:** Second placeholder uses a distinct kitchen Unsplash so tiles are not duplicates.
+
+### Verify
+- Superseded: hero now uses **Ethan’s `ig-*` order only** (see next log entry).
+
+---
+
+## 2026-04-07 — Header height: room for logo ring / glow
+
+### Changes
+- **`Header`:** Main row **`h-16` → `min-h-[5.5rem] py-3` / `sm:min-h-[6rem] sm:py-3.5`** so the mark, ring-offset, and pulse shadow sit inside the frosted bar instead of bleeding over the hero. Mobile sub-nav **`py-2.5`**.
+
+---
+
+## 2026-04-07 — Hero welcome band + logo emphasis + header polish
+
+### Changes
+- **`HeroAnimatedCopy`:** “Welcome to” + company name live in a **rounded frosted card**; main story (eyebrow, H1, body, trust line) sits in a **bronze left rule** block. Company line slightly smaller; headline scales to **`xl:text-7xl`**. Inner motion stagger for the main block.
+- **`tailwind.config`:** `logo-emphasis` keyframes — soft scale + bronze **drop-shadow** pulse (~3.8s).
+- **`LogoOrWordmark` / `BrandWordmark`:** Bronze **ring + ring-offset**; **`motion-safe:animate-logo-emphasis`** on mark ( **`motion-reduce:animate-none`** ).
+- **`Header`:** Nav links get subtle **hover pill**; **Book consult** slightly bolder + ring on hover.
+
+### Verify
+- `npm run dev` — hero reads in two bands; logo breathes gently; reduced motion disables logo pulse.
+
+---
+
+## 2026-04-07 — Home hero: Ethan’s `ig-*.jpg` only (cabinetry-first)
+
+### Changes
+- **`HeroSection`:** Hero background is **only** from `public/social/ig-01.jpg`…`ig-06.jpg`, in order **ig-05 → ig-06 → ig-02 → ig-01 → ig-04 → ig-03** (reeded cabinet wall and reface first). No demo Unsplash file for hero. Alts pulled from **`gallery-fallback.ts`**. Unsplash remains only if no `ig-*` files exist in the build.
+- **`ATTRIBUTION.txt`:** Updated hero description.
+
+### Verify
+- With `ig-05.jpg` present, home hero matches that cabinetry shot; gallery may show the same image again on `/gallery` (acceptable).
+
+---
+
 ## 2026-04-05 — GitHub: first push (`mexemexe02/total-concept-kitchens`)
 
 ### Problem

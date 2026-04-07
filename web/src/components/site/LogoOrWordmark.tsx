@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BrandWordmark } from "@/components/site/BrandWordmark";
 import { siteConfig } from "@/lib/site-config";
+import { cn } from "@/lib/utils";
 
 const LOGO_EXTENSIONS = ["svg", "png", "jpg", "jpeg", "webp"] as const;
 
@@ -30,26 +31,38 @@ export function LogoOrWordmark() {
   const isSvg = src.endsWith(".svg");
 
   return (
-    <Link href="/" className="block shrink-0" aria-label={`${siteConfig.name} home`}>
-      {isSvg ? (
-        // eslint-disable-next-line @next/next/no-img-element -- SVG from public; avoids next/image SVG config
-        <img
-          src={src}
-          alt={`${siteConfig.name} logo`}
-          width={820}
-          height={473}
-          className="h-12 w-auto max-w-[min(420px,72vw)] object-contain object-left sm:h-14 sm:max-w-[min(480px,65vw)]"
-        />
-      ) : (
-        <Image
-          src={src}
-          alt={`${siteConfig.name} logo`}
-          width={820}
-          height={473}
-          className="h-12 w-auto max-w-[min(420px,72vw)] object-contain object-left sm:h-14 sm:max-w-[min(480px,65vw)]"
-          priority
-        />
-      )}
+    <Link
+      href="/"
+      className="block shrink-0 rounded-lg ring-1 ring-bronze/15 ring-offset-2 ring-offset-cream transition hover:ring-bronze/35 dark:ring-bronze/25 dark:ring-offset-charcoal"
+      aria-label={`${siteConfig.name} home`}
+    >
+      <span
+        className={cn(
+          "inline-block rounded-md",
+          /* Soft idle pulse + glow — disabled when user prefers reduced motion */
+          "motion-safe:animate-logo-emphasis motion-reduce:animate-none",
+        )}
+      >
+        {isSvg ? (
+          // eslint-disable-next-line @next/next/no-img-element -- SVG from public; avoids next/image SVG config
+          <img
+            src={src}
+            alt={`${siteConfig.name} logo`}
+            width={820}
+            height={473}
+            className="h-12 w-auto max-w-[min(420px,72vw)] object-contain object-left sm:h-14 sm:max-w-[min(480px,65vw)]"
+          />
+        ) : (
+          <Image
+            src={src}
+            alt={`${siteConfig.name} logo`}
+            width={820}
+            height={473}
+            className="h-12 w-auto max-w-[min(420px,72vw)] object-contain object-left sm:h-14 sm:max-w-[min(480px,65vw)]"
+            priority
+          />
+        )}
+      </span>
     </Link>
   );
 }
