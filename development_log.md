@@ -445,3 +445,19 @@
 - From repo root: `npm run dev` (Next on **3012**).
 - Open **http://localhost:3012/portal**, sign in with that password; settings should load/save to `web/content/portal-settings.json`.
 - **Production (Coolify/Docker):** set the same two variables in the host environment (not only on the dev machine).
+
+---
+
+## 2026-04-05 — GitHub: first push (`mexemexe02/total-concept-kitchens`)
+
+### Problem
+- Root `git init` had staged **`web`** as an embedded repo (nested `web/.git`). **`git rm --cached -f web`** after removing **`web/.git`** fixed the index so **`web/`** files commit as normal paths.
+
+### Other
+- **`git config --global safe.directory`** added for `V:/Cursor_Projects/Websites/cursor Total_Concept_Kitchens` (dubious ownership: `.git` owned by Administrators vs current user).
+
+### Remote
+- **https://github.com/mexemexe02/total-concept-kitchens.git** — branch **`main`**, initial commit **`8f20552`**. **`web/.env.local`** not in repo (gitignored).
+
+### Verify
+- Open repo on GitHub; Coolify: source **mexemexe02/total-concept-kitchens**, build context **`web`**.
