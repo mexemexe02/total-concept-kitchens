@@ -3,27 +3,61 @@ import path from "path";
 import Image from "next/image";
 import { HeroAnimatedCopy } from "@/components/site/HeroAnimatedCopy";
 import { demoHero } from "@/lib/demo-content";
-import { fallbackGalleryImageSrcs } from "@/lib/gallery-fallback";
+import { fallbackGalleryItems } from "@/lib/gallery-fallback";
+import { siteConfig } from "@/lib/site-config";
 
-/** Prefer a real still under `public/social/` — see `ATTRIBUTION.txt`. */
-const HERO_LOCAL = "/social/hero-ig.jpg";
-/** Shown when `hero-ig.jpg` is missing (e.g. clone without binary assets). Unsplash license. */
+/**
+ * Last resort when Ethan’s `public/social/ig-*.jpg` files are not in the deploy (e.g. empty public/).
+ * @see https://unsplash.com/license
+ */
 const HERO_REMOTE =
-  "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=2000&q=85";
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85";
 
-if (fallbackGalleryImageSrcs.includes(HERO_LOCAL)) {
-  throw new Error(
-    "[HeroSection] Hero image must not reuse a gallery fallback file — pick another JPEG in public/social/",
+type HeroAsset = { src: string; alt: string; local: boolean };
+
+/**
+ * Instagram stills under `public/social/` (same sources as `gallery-fallback.ts`).
+ * Order favors **cabinetry-forward** frames for the hero: reeded wall, reface, then full kitchens.
+ * We do not use `hero-ig.jpg` (unreliable) or demo stock — Ethan’s downloads only when present.
+ */
+const HERO_SOCIAL_ORDER = [
+  "/social/ig-05.jpg",
+  "/social/ig-06.jpg",
+  "/social/ig-02.jpg",
+  "/social/ig-01.jpg",
+  "/social/ig-04.jpg",
+  "/social/ig-03.jpg",
+] as const;
+
+function resolveHeroAsset(cwd: string): HeroAsset {
+  const altBySrc = new Map(
+    fallbackGalleryItems.map((item) => [item.src, item.alt] as const),
   );
+
+  for (const src of HERO_SOCIAL_ORDER) {
+    const disk = path.join(cwd, "public", ...src.split("/").filter(Boolean));
+    if (fs.existsSync(disk)) {
+      return {
+        src,
+        alt:
+          altBySrc.get(src) ??
+          "Total Concept Kitchens — custom cabinetry project photo",
+        local: true,
+      };
+    }
+  }
+
+  return {
+    src: HERO_REMOTE,
+    alt: "Sample kitchen interior — add Ethan’s JPEGs to public/social/ (ig-01.jpg … ig-06.jpg)",
+    local: false,
+  };
 }
 
 export async function HeroSection() {
-  const disk = path.join(process.cwd(), "public", "social", "hero-ig.jpg");
-  const useLocal = fs.existsSync(disk);
-  const heroSrc = useLocal ? HERO_LOCAL : HERO_REMOTE;
-  const heroAlt = useLocal
-    ? "Custom kitchen with large island, tall range hood, and wood ceiling beams"
-    : "Sample kitchen interior — replace with public/social/hero-ig.jpg for your project photo";
+  const { src: heroSrc, alt: heroAlt, local: useLocal } = resolveHeroAsset(
+    process.cwd(),
+  );
 
   return (
     <section className="relative overflow-hidden bg-charcoal text-cream">
@@ -63,6 +97,8 @@ export async function HeroSection() {
         />
       </div>
       <HeroAnimatedCopy
+        welcomePrefix="Welcome to"
+        companyName={siteConfig.name}
         eyebrow={demoHero.eyebrow}
         headline={demoHero.headline}
         supporting={demoHero.supporting}

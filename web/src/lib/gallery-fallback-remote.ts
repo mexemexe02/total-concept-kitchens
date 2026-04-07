@@ -10,8 +10,8 @@ import type { GalleryItem } from "@/lib/gallery-types";
 export const remotePlaceholderGalleryItems: GalleryItem[] = [
   {
     id: "placeholder-unsplash-1",
-    src: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1400&q=80",
-    alt: "Bright modern kitchen interior with island (sample image)",
+    src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+    alt: "Minimal kitchen with island seating and cabinetry (sample image)",
     caption:
       "Sample imagery from Unsplash — add your project photos to public/social/ to replace this grid.",
     href: "https://www.instagram.com/totalconceptkitchens/",
@@ -19,8 +19,8 @@ export const remotePlaceholderGalleryItems: GalleryItem[] = [
   },
   {
     id: "placeholder-unsplash-2",
-    src: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1400&q=80",
-    alt: "Kitchen with white cabinets and wood accents (sample image)",
+    src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=80",
+    alt: "Contemporary kitchen with range hood and counter lighting (sample image)",
     caption:
       "Sample imagery — see public/social/ATTRIBUTION.txt for how to use your own stills.",
     href: "https://www.instagram.com/totalconceptkitchens/",

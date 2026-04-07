@@ -4,6 +4,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
 type Props = {
+  /** Short line above the company name, e.g. “Welcome to”. */
+  welcomePrefix: string;
+  /** Business name from `siteConfig` so it stays consistent site-wide. */
+  companyName: string;
   eyebrow: string;
   headline: string;
   supporting: string;
@@ -17,6 +21,8 @@ const ease = [0.22, 1, 0.36, 1] as const;
  * not neon. Skips motion when the visitor prefers reduced motion.
  */
 export function HeroAnimatedCopy({
+  welcomePrefix,
+  companyName,
   eyebrow,
   headline,
   supporting,
@@ -27,16 +33,28 @@ export function HeroAnimatedCopy({
   if (reduce) {
     return (
       <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-center px-4 py-28 sm:px-6">
-        <p className="text-sm font-medium uppercase tracking-[0.22em] text-bronze-light">
-          {eyebrow}
-        </p>
-        <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight text-balance sm:text-5xl md:text-6xl lg:text-[3.35rem]">
-          {headline}
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-stone-300 md:text-xl">
-          {supporting}
-        </p>
-        <p className="mt-4 max-w-2xl text-sm text-stone-500">{trustLine}</p>
+        {/* Greeting — visually separated from the main marketing story below */}
+        <div className="max-w-lg rounded-2xl border border-cream/15 bg-cream/[0.07] px-5 py-4 shadow-sm shadow-black/10 backdrop-blur-sm sm:px-6 sm:py-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-bronze-light/95">
+            {welcomePrefix}
+          </p>
+          <p className="mt-2 font-display text-xl font-semibold leading-snug tracking-tight text-cream sm:text-2xl">
+            {companyName}
+          </p>
+        </div>
+
+        <div className="relative mt-10 max-w-3xl border-l-2 border-bronze/50 pl-5 sm:mt-12 sm:pl-6">
+          <p className="text-sm font-medium uppercase tracking-[0.22em] text-bronze-light">
+            {eyebrow}
+          </p>
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.08] tracking-tight text-balance text-cream sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl">
+            {headline}
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-stone-300 md:text-xl">
+            {supporting}
+          </p>
+          <p className="mt-4 max-w-2xl text-sm text-stone-500">{trustLine}</p>
+        </div>
         <div className="mt-10 flex flex-wrap gap-4">
           <Link
             href="/contact"
@@ -63,46 +81,78 @@ export function HeroAnimatedCopy({
       variants={{
         hidden: {},
         show: {
-          transition: { staggerChildren: 0.11, delayChildren: 0.08 },
+          transition: { staggerChildren: 0.11, delayChildren: 0.06 },
         },
       }}
     >
-      <motion.p
-        className="text-sm font-medium uppercase tracking-[0.22em] text-bronze-light"
+      <motion.div
+        className="max-w-lg rounded-2xl border border-cream/15 bg-cream/[0.07] px-5 py-4 shadow-sm shadow-black/10 backdrop-blur-sm sm:px-6 sm:py-5"
         variants={{
           hidden: { opacity: 1, y: 18 },
-          show: { opacity: 1, y: 0, transition: { duration: 0.55, ease } },
-        }}
-      >
-        {eyebrow}
-      </motion.p>
-      <motion.h1
-        className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight text-balance sm:text-5xl md:text-6xl lg:text-[3.35rem]"
-        variants={{
-          hidden: { opacity: 1, y: 28 },
-          show: { opacity: 1, y: 0, transition: { duration: 0.65, ease } },
-        }}
-      >
-        {headline}
-      </motion.h1>
-      <motion.p
-        className="mt-6 max-w-2xl text-lg leading-relaxed text-stone-300 md:text-xl"
-        variants={{
-          hidden: { opacity: 1, y: 22 },
-          show: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
-        }}
-      >
-        {supporting}
-      </motion.p>
-      <motion.p
-        className="mt-4 max-w-2xl text-sm text-stone-500"
-        variants={{
-          hidden: { opacity: 1, y: 14 },
           show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
         }}
       >
-        {trustLine}
-      </motion.p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-bronze-light/95">
+          {welcomePrefix}
+        </p>
+        <p className="mt-2 font-display text-xl font-semibold leading-snug tracking-tight text-cream sm:text-2xl">
+          {companyName}
+        </p>
+      </motion.div>
+
+      <motion.div
+        className="relative mt-10 max-w-3xl border-l-2 border-bronze/50 pl-5 sm:mt-12 sm:pl-6"
+        variants={{
+          hidden: { opacity: 1, y: 22 },
+          show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+              duration: 0.58,
+              ease,
+              staggerChildren: 0.09,
+              delayChildren: 0.04,
+            },
+          },
+        }}
+      >
+        <motion.p
+          className="text-sm font-medium uppercase tracking-[0.22em] text-bronze-light"
+          variants={{
+            hidden: { opacity: 1, y: 14 },
+            show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
+          }}
+        >
+          {eyebrow}
+        </motion.p>
+        <motion.h1
+          className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.08] tracking-tight text-balance text-cream sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl"
+          variants={{
+            hidden: { opacity: 1, y: 28 },
+            show: { opacity: 1, y: 0, transition: { duration: 0.65, ease } },
+          }}
+        >
+          {headline}
+        </motion.h1>
+        <motion.p
+          className="mt-6 max-w-2xl text-lg leading-relaxed text-stone-300 md:text-xl"
+          variants={{
+            hidden: { opacity: 1, y: 22 },
+            show: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
+          }}
+        >
+          {supporting}
+        </motion.p>
+        <motion.p
+          className="mt-4 max-w-2xl text-sm text-stone-500"
+          variants={{
+            hidden: { opacity: 1, y: 14 },
+            show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
+          }}
+        >
+          {trustLine}
+        </motion.p>
+      </motion.div>
       <motion.div
         className="mt-10 flex flex-wrap gap-4"
         variants={{

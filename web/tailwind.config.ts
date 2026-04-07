@@ -21,11 +21,23 @@ const config: Config = {
           "0%, 80%, 100%": { transform: "scale(0.65)", opacity: "0.45" },
           "40%": { transform: "scale(1)", opacity: "1" },
         },
+        /** Idle emphasis on header logo — subtle scale + bronze-tinted shadow (respect `motion-reduce`). */
+        "logo-emphasis": {
+          "0%, 100%": {
+            transform: "scale(1)",
+            filter: "drop-shadow(0 1px 2px rgba(28, 27, 25, 0.08))",
+          },
+          "50%": {
+            transform: "scale(1.03)",
+            filter: "drop-shadow(0 3px 14px rgba(154, 123, 79, 0.28))",
+          },
+        },
       },
       animation: {
         "hero-aurora": "hero-aurora 22s ease-in-out infinite",
         "hero-aurora-slow": "hero-aurora-slow 28s ease-in-out infinite",
         "mise-dot": "mise-dot 1.15s ease-in-out infinite",
+        "logo-emphasis": "logo-emphasis 3.8s ease-in-out infinite",
       },
       colors: {
         background: "var(--background)",

@@ -11,10 +11,15 @@ export function BrandWordmark({ className }: Props) {
   return (
     <Link
       href="/"
-      className={cn("group flex items-center gap-2.5", className)}
+      className={cn(
+        "group flex items-center gap-2.5 rounded-lg ring-1 ring-bronze/15 ring-offset-2 ring-offset-cream pr-1 transition hover:ring-bronze/35 dark:ring-bronze/25 dark:ring-offset-charcoal",
+        className,
+      )}
     >
       <span
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-charcoal text-xs font-bold tracking-tight text-cream shadow-sm transition group-hover:bg-bronze group-hover:text-charcoal dark:bg-bronze dark:text-charcoal dark:group-hover:bg-bronze-light"
+        className={cn(
+          "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-charcoal text-xs font-bold tracking-tight text-cream shadow-sm transition motion-safe:animate-logo-emphasis motion-reduce:animate-none group-hover:bg-bronze group-hover:text-charcoal dark:bg-bronze dark:text-charcoal dark:group-hover:bg-bronze-light",
+        )}
         aria-hidden
       >
         TCK

@@ -4,8 +4,8 @@ Source: Instagram @totalconceptkitchens (Meta CDN, scontent-*.cdninstagram.com).
 Captured: 2026-04-05 via authenticated web session for use on this marketing site only.
 
 Files:
-- hero-ig.jpg — hero background
-- ig-01.jpg … ig-06.jpg — gallery grid fallbacks when the Instagram Graph API is not configured
+- ig-01.jpg … ig-06.jpg — gallery grid fallbacks when the Instagram Graph API is not configured; the **home hero** uses these too (prefers ig-05 → ig-06 → ig-02 → … for cabinetry-first framing).
+- hero-ig.jpg — not used by the site hero (keep or delete as you like).
 
 These URLs expire on Meta’s CDN; local files stay stable for Docker/Coolify builds.
 Replace or add images anytime; keep this file updated if you swap assets.
@@ -17,5 +17,4 @@ JPEGs here or configure `INSTAGRAM_ACCESS_TOKEN` + `INSTAGRAM_USER_ID`.
 Caption text under gallery tiles is copied from the matching Instagram posts (see
 web/src/lib/gallery-fallback.ts and web/content/business-profile-source.json).
 
-hero-ig.jpg must stay a different file from ig-01.jpg … ig-06.jpg (hero is not repeated
-in the gallery). The app throws at startup if a path is duplicated in the fallback list.
+Home hero: first existing file in order ig-05, ig-06, ig-02, ig-01, ig-04, ig-03; else Unsplash placeholder.
