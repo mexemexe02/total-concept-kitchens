@@ -1,5 +1,19 @@
 # Development log — Total Concept Kitchens
 
+## 2026-04-08 — Pantry OpenAI: wider answers + clearer fallbacks
+
+### Why
+- Random / general questions returned the old **“outside Pantry’s scope”** line — that path is **`fallback`**, which usually means **no `OPENAI_API_KEY`** or an **API failure**, not the model refusing.
+
+### What changed
+- **OpenAI system prompt:** explicitly allows **general knowledge, trivia, small talk, etc.** with a **short real answer**, then a **natural bridge** to Total Concept Kitchens / Ethan. Slightly higher **temperature 0.55** and **max_tokens 520**.
+- **Two fallbacks:** `MISE_FALLBACK_NO_OPENAI` (key missing — explains FAQ-only for open-ended topics) and `MISE_FALLBACK_OPENAI_FAILED` (key present but empty/error response). `MISE_FALLBACK` remains an alias of the no-key message for backward compatibility.
+
+### Ops
+- Production needs **`OPENAI_API_KEY`** on the server for broad answers; redeploy env if visitors still see the no-key fallback.
+
+---
+
 ## 2026-04-08 — Portal simple CRM (`content/crm-leads.json`)
 
 ### What shipped
