@@ -11,6 +11,7 @@ type Props = {
   initialGreeting: string;
   footerNote: string;
 };
+type ChatSource = "faq" | "openai" | "fallback" | "greeting" | "disabled";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -31,7 +32,7 @@ function TypingIndicator() {
 }
 
 /**
- * Floating **Mise** assistant — matches site bronze/charcoal styling.
+ * Floating Pantry assistant — matches site bronze/charcoal styling.
  * Answers from FAQ bank + optional OpenAI when `OPENAI_API_KEY` is set server-side.
  */
 export function MiseChatWidget({ initialGreeting, footerNote }: Props) {
@@ -39,8 +40,10 @@ export function MiseChatWidget({ initialGreeting, footerNote }: Props) {
   const [input, setInput] = useState("");
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [pending, setPending] = useState(false);
+  const [lastSource, setLastSource] = useState<ChatSource | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const debugSource = process.env.NEXT_PUBLIC_CHAT_DEBUG === "true";
 
   useEffect(() => {
     if (!open || msgs.length > 0) return;
@@ -63,11 +66,17 @@ export function MiseChatWidget({ initialGreeting, footerNote }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: t }),
       });
-      const data = (await res.json()) as { reply?: string; error?: string };
+      const data = (await res.json()) as {
+        reply?: string;
+        error?: string;
+        source?: ChatSource;
+      };
       const reply =
         data.reply ?? data.error ?? "Something went wrong — try the Contact page.";
+      setLastSource(data.source ?? null);
       setMsgs((m) => [...m, { role: "mise", text: reply }]);
     } catch {
+      setLastSource(null);
       setMsgs((m) => [
         ...m,
         {
@@ -173,6 +182,11 @@ export function MiseChatWidget({ initialGreeting, footerNote }: Props) {
             <p className="mt-1 px-1 text-[10px] leading-snug text-stone-500 dark:text-stone-500">
               {footerNote}
             </p>
+            {debugSource && lastSource ? (
+              <p className="mt-1 px-1 text-[10px] font-medium uppercase tracking-wide text-stone-500 dark:text-stone-500">
+                source: {lastSource}
+              </p>
+            ) : null}
           </div>
         </motion.div>
       ) : null}

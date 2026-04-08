@@ -1,5 +1,6 @@
 {
   "announcementBanner": null,
+  "chatEnabled": true,
   "chatGreeting": null,
   "chatFooterNote": null,
   "updatedAt": null,

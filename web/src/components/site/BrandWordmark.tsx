@@ -12,23 +12,23 @@ export function BrandWordmark({ className }: Props) {
     <Link
       href="/"
       className={cn(
-        "group flex items-center gap-2.5 rounded-lg ring-1 ring-bronze/15 ring-offset-2 ring-offset-cream pr-1 transition hover:ring-bronze/35 dark:ring-bronze/25 dark:ring-offset-charcoal",
+        "group flex items-center gap-2.5 pr-1 transition",
         className,
       )}
     >
       <span
         className={cn(
-          "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-charcoal text-xs font-bold tracking-tight text-cream shadow-sm transition motion-safe:animate-logo-emphasis motion-reduce:animate-none group-hover:bg-bronze group-hover:text-charcoal dark:bg-bronze dark:text-charcoal dark:group-hover:bg-bronze-light",
+          "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-charcoal text-xs font-bold tracking-tight text-cream shadow-sm transition motion-safe:animate-logo-emphasis motion-reduce:animate-none group-hover:bg-bronze group-hover:text-charcoal",
         )}
         aria-hidden
       >
         TCK
       </span>
       <span className="flex flex-col leading-tight">
-        <span className="text-sm font-semibold tracking-tight text-charcoal dark:text-cream">
+        <span className="text-sm font-semibold tracking-tight text-charcoal">
           Total Concept
         </span>
-        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-stone-500 dark:text-stone-400">
+        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-stone-500">
           Kitchens
         </span>
       </span>

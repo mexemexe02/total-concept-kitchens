@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import type { PortalSettings } from "@/lib/mise-types";
 
-/** One editable row in the Mise custom FAQ editor (tags as comma-separated text). */
+/** One editable row in the Pantry custom FAQ editor (tags as comma-separated text). */
 type MiseFaqEditorRow = { q: string; a: string; tags: string };
+type PortalTextKey = Exclude<keyof PortalSettings, "chatEnabled" | "updatedAt">;
 import { EMPTY_PORTAL_SETTINGS } from "@/lib/portal-defaults";
 import { PORTAL_MUTABLE_KEYS } from "@/lib/portal-mutable-keys";
 
 /**
- * Owner portal: edits `content/portal-settings.json` (banner, Mise, hero, contact,
+ * Owner portal: edits `content/portal-settings.json` (banner, Pantry, hero, contact,
  * footer, hours, reviews link, private notes). Public site reads the same file server-side.
  */
 export function PortalClient() {
@@ -22,10 +23,16 @@ export function PortalClient() {
   const [miseFaqSaving, setMiseFaqSaving] = useState(false);
   const [miseFaqMsg, setMiseFaqMsg] = useState<string | null>(null);
 
-  const setField = (key: keyof PortalSettings, value: string) => {
+  const setField = (key: PortalTextKey, value: string) => {
     setForm((f) => ({
       ...f,
       [key]: value.trim() === "" ? null : value,
+    }));
+  };
+  const setBoolField = (key: keyof PortalSettings, value: boolean) => {
+    setForm((f) => ({
+      ...f,
+      [key]: value,
     }));
   };
 
@@ -103,8 +110,9 @@ export function PortalClient() {
     setErr(null);
     try {
       const payload: Partial<PortalSettings> = {};
+      const mutablePayload = payload as Record<string, string | boolean | null>;
       for (const key of PORTAL_MUTABLE_KEYS) {
-        payload[key] = form[key];
+        mutablePayload[key] = form[key];
       }
       const res = await fetch("/api/portal/settings", {
         method: "POST",
@@ -176,7 +184,7 @@ export function PortalClient() {
       <div className="rounded-2xl border border-stone-200 bg-white p-8 shadow-sm dark:border-stone-800 dark:bg-charcoal">
         <h1 className="text-xl font-semibold text-charcoal dark:text-cream">Sign in</h1>
         <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
-          Staff portal — edit live site copy (banner, home hero, contact, footer, Mise, and
+          Staff portal — edit live site copy (banner, home hero, contact, footer, Pantry, and
           more). Password is in server{" "}
           <code className="rounded bg-stone-100 px-1 text-xs dark:bg-stone-800">.env</code>.
         </p>
@@ -219,7 +227,7 @@ export function PortalClient() {
             Site content
           </h1>
           <p className="mt-1 text-sm text-stone-600 dark:text-stone-400">
-            Ten useful controls for Ethan — leave blank to keep the default site text.
+            Site controls for Ethan — leave blank to keep default copy.
           </p>
         </div>
         <button
@@ -260,8 +268,20 @@ export function PortalClient() {
         </div>
 
         <div className={section}>
-          <h2 className={h2}>2 · Mise chatbot</h2>
+          <h2 className={h2}>2 · Pantry chatbot</h2>
           <p className={hint}>Visitor-facing chat widget on every page.</p>
+          <label className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-stone-200 bg-white px-3 py-2 dark:border-stone-700 dark:bg-stone-900/60">
+            <span className={`${label} !mt-0`}>Enable Pantry on public pages</span>
+            <input
+              type="checkbox"
+              checked={form.chatEnabled}
+              onChange={(e) => setBoolField("chatEnabled", e.target.checked)}
+              className="h-4 w-4 accent-bronze"
+            />
+          </label>
+          <p className={hint}>
+            Turn off to hide the widget and disable <code>/api/chat</code> replies.
+          </p>
           <label className="mt-3 block">
             <span className={label}>Opening greeting</span>
             <textarea
@@ -282,8 +302,8 @@ export function PortalClient() {
             />
           </label>
           <p className={`${hint} mt-4`}>
-            For exact question-and-answer pairs Mise can match before the big generated FAQ, use{" "}
-            <strong className="font-medium text-charcoal dark:text-cream">Mise custom Q&A</strong>{" "}
+            For exact question-and-answer pairs Pantry can match before the big generated FAQ, use{" "}
+            <strong className="font-medium text-charcoal dark:text-cream">Pantry custom Q&A</strong>{" "}
             below the main form (separate save).
           </p>
         </div>
@@ -438,7 +458,7 @@ export function PortalClient() {
       >
         <div>
           <h2 className="text-xl font-semibold text-charcoal dark:text-cream">
-            11 · Mise custom Q&A
+            11 · Pantry custom Q&A
           </h2>
           <p className="mt-1 text-sm text-stone-600 dark:text-stone-400">
             These pairs are merged <em>ahead</em> of the generated FAQ so visitors get your wording
@@ -488,7 +508,7 @@ export function PortalClient() {
                 />
               </label>
               <label className="mt-3 block">
-                <span className={label}>Answer (Mise will add a short opener in front)</span>
+                <span className={label}>Answer (Pantry will add a short opener in front)</span>
                 <textarea
                   value={row.a}
                   onChange={(e) =>
@@ -533,7 +553,7 @@ export function PortalClient() {
             disabled={miseFaqSaving}
             className="rounded-full bg-charcoal px-8 py-2.5 text-sm font-semibold text-cream hover:bg-bronze disabled:opacity-50 dark:bg-bronze dark:text-charcoal"
           >
-            {miseFaqSaving ? "Saving…" : "Save Mise Q&A"}
+            {miseFaqSaving ? "Saving…" : "Save Pantry Q&A"}
           </button>
         </div>
         {miseFaqMsg ? (

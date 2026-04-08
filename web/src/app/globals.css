@@ -8,13 +8,19 @@
 }
 
 /*
-  Do not flip the whole page shell with OS dark mode. That made localhost (often Windows
-  dark theme) look muddy: near-black body + mixed light/dark sections, while “live” on a
-  phone/light browser looked more cohesive. Per-component `dark:` utilities still work.
+  When `<html class="dark">` (see root layout script + DarkModeSync), body and gaps between
+  sections use dark tokens. Without this, `body` stayed cream while only some sections used
+  `dark:bg-*`, so “dark mode” looked half-broken.
 */
 html {
   color-scheme: light;
   scroll-behavior: smooth;
+}
+
+html.dark {
+  color-scheme: dark;
+  --background: #1c1b19;
+  --foreground: #f7f5f0;
 }
 
 body {

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
+import { DarkModeSync } from "@/components/site/DarkModeSync";
 import { MiseChatWidget } from "@/components/site/MiseChatWidget";
 import { SiteAnnouncement } from "@/components/site/SiteAnnouncement";
 import { MISE_GREETING_DEFAULT } from "@/lib/mise-personality";
@@ -51,19 +53,30 @@ export default async function RootLayout({
 }>) {
   const portal = await getPortalSettings();
   const banner = portal.announcementBanner?.trim() ?? "";
+  const chatEnabled = portal.chatEnabled !== false;
   const greeting = portal.chatGreeting?.trim() || MISE_GREETING_DEFAULT;
   const chatFooter =
     portal.chatFooterNote?.trim() ??
     `For project-specific answers, contact ${siteConfig.ownerName} — see Contact.`;
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var q=new URLSearchParams(location.search);if(q.get("dark")==="1")document.documentElement.classList.add("dark");else if(q.get("dark")==="0"){}else if(window.matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark");}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${displaySerif.variable} font-sans antialiased`}
       >
+        <Suspense fallback={null}>
+          <DarkModeSync />
+        </Suspense>
         {banner ? <SiteAnnouncement text={banner} /> : null}
         {children}
-        <MiseChatWidget initialGreeting={greeting} footerNote={chatFooter} />
+        {chatEnabled ? <MiseChatWidget initialGreeting={greeting} footerNote={chatFooter} /> : null}
       </body>
     </html>
   );

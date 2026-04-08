@@ -4,6 +4,7 @@ import { getCustomMiseFaq } from "@/lib/mise-custom-faq";
 import { MISE_FALLBACK, MISE_OPENERS, MISE_GREETING_DEFAULT } from "@/lib/mise-personality";
 import { findBestFaqMatch } from "@/lib/mise-match";
 import type { MiseFaqRow } from "@/lib/mise-types";
+import { routePantryGreeting } from "@/lib/pantry-chat-router";
 import { getPortalSettings } from "@/lib/portal-settings";
 import { siteConfig } from "@/lib/site-config";
 
@@ -30,6 +31,21 @@ export async function POST(req: Request) {
   }
 
   const portal = await getPortalSettings();
+  if (portal.chatEnabled === false) {
+    return NextResponse.json(
+      {
+        reply: "Pantry is currently disabled. Please use the Contact page to reach Ethan directly.",
+        source: "disabled",
+      },
+      { status: 503 },
+    );
+  }
+
+  const cannedGreeting = routePantryGreeting(message);
+  if (cannedGreeting) {
+    return NextResponse.json({ reply: cannedGreeting, source: "greeting" });
+  }
+
   const custom = await getCustomMiseFaq();
   // Custom rows first so equal scores prefer Ethan's answers over generated FAQ.
   const bank: MiseFaqRow[] = [...custom, ...staticBank];
@@ -47,8 +63,14 @@ export async function POST(req: Request) {
   const openaiKey = process.env.OPENAI_API_KEY;
   if (openaiKey) {
     try {
-      const sys = `You are Mise, the upbeat but professional virtual assistant for ${siteConfig.name}, a custom kitchen design and cabinetry company in ${siteConfig.region} led by ${siteConfig.ownerName}. 
-Rules: Keep answers under 120 words. Use a warm, slightly playful tone (light kitchen wordplay allowed, not cheesy). If you are unsure or the question needs a site visit, say so and direct them to phone ${siteConfig.phoneDisplay} or email ${siteConfig.email}. Never invent prices or guarantees.`;
+      const sys = `You are Pantry, the automated website assistant for ${siteConfig.name}, a kitchen design and cabinetry company in ${siteConfig.region}.
+Rules:
+- Keep replies under 90 words and stay concise.
+- Scope is ONLY this business: services, timelines, process, service area, booking, and contact info.
+- For unrelated prompts (recipes, trivia, coding, homework, etc.), politely decline in one sentence and immediately redirect to site-relevant help (services/process/contact).
+- Do not claim to be a human. Do not use roleplay.
+- Never invent prices, guarantees, legal advice, or technical details you are unsure about.
+- When uncertain, direct people to ${siteConfig.ownerName} at ${siteConfig.phoneDisplay} or ${siteConfig.email}.`;
 
       const res = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
@@ -63,7 +85,7 @@ Rules: Keep answers under 120 words. Use a warm, slightly playful tone (light ki
             { role: "user", content: message },
           ],
           max_tokens: 280,
-          temperature: 0.7,
+          temperature: 0.4,
         }),
       });
       if (res.ok) {
@@ -74,9 +96,16 @@ Rules: Keep answers under 120 words. Use a warm, slightly playful tone (light ki
         if (reply) {
           return NextResponse.json({ reply, source: "openai" });
         }
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("/api/chat openai: empty reply");
+        }
+      } else if (process.env.NODE_ENV !== "production") {
+        console.warn("/api/chat openai non-ok status:", res.status);
       }
-    } catch {
-      /* fall through */
+    } catch (error) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("/api/chat openai exception:", error);
+      }
     }
   }
 
@@ -90,6 +119,7 @@ Rules: Keep answers under 120 words. Use a warm, slightly playful tone (light ki
 export async function GET() {
   const portal = await getPortalSettings();
   return NextResponse.json({
+    enabled: portal.chatEnabled !== false,
     greeting: portal.chatGreeting ?? MISE_GREETING_DEFAULT,
     footerNote:
       portal.chatFooterNote ??

@@ -3,6 +3,7 @@ import type { PortalSettings } from "@/lib/mise-types";
 /** Safe to import from client components — no Node `fs`. */
 export const EMPTY_PORTAL_SETTINGS: PortalSettings = {
   announcementBanner: null,
+  chatEnabled: true,
   chatGreeting: null,
   chatFooterNote: null,
   updatedAt: null,

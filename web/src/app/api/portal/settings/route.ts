@@ -32,16 +32,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
   const current = await getPortalSettings();
-  const pick = (v: unknown, cur: string | null): string | null => {
+  const pick = (
+    v: unknown,
+    cur: PortalSettings[keyof PortalSettings],
+  ): PortalSettings[keyof PortalSettings] => {
+    if (typeof cur === "boolean") {
+      return typeof v === "boolean" ? v : cur;
+    }
     if (v === null) return null;
     if (typeof v === "string") return v.trim() === "" ? null : v;
     return cur;
   };
   const next: PortalSettings = { ...current };
+  const mutableNext = next as unknown as Record<string, unknown>;
   for (const key of PORTAL_MUTABLE_KEYS) {
     if (body[key] !== undefined) {
-      const cur = current[key] as string | null;
-      next[key] = pick(body[key], cur) as PortalSettings[typeof key];
+      mutableNext[key] = pick(body[key], current[key]);
     }
   }
   await savePortalSettings(next);

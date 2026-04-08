@@ -12,7 +12,9 @@ export type MiseFaqRow = {
 export type PortalSettings = {
   /** Optional site-wide banner (HTML escaped when rendered as text). */
   announcementBanner: string | null;
-  /** Replaces default Mise greeting in the widget. */
+  /** When false, hides Pantry on public pages and disables chat responses. */
+  chatEnabled: boolean;
+  /** Replaces default Pantry greeting in the widget. */
   chatGreeting: string | null;
   /** Short note shown under the chat input. */
   chatFooterNote: string | null;

@@ -1,9 +1,9 @@
 /**
- * "Mise" — Total Concept Kitchens assistant (mise en place: everything in its place).
- * Fun, warm, professional — never snarky; kitchen wordplay is light seasoning, not the meal.
+ * "Pantry" — non-human assistant label for Total Concept Kitchens.
+ * Friendly and useful, but always clearly automated.
  */
-export const MISE_BOT_NAME = "Mise";
-export const MISE_BOT_TAGLINE = "Your Total Concept Kitchens co-pilot";
+export const MISE_BOT_NAME = "Pantry";
+export const MISE_BOT_TAGLINE = "Automated website assistant";
 
 /** Short openers prepended to matched FAQ answers for personality (rotated by message hash). */
 export const MISE_OPENERS = [
@@ -17,8 +17,11 @@ export const MISE_OPENERS = [
 
 /** When no FAQ match, friendly handoff (always ends with human contact). */
 export const MISE_FALLBACK =
-  "That is a bit outside my recipe cards — I am still learning! " +
-  "For a precise answer, reach out to Ethan on our Contact page with a photo or two; " +
-  "he will get you sorted faster than I can slice an onion.";
+  "That request is outside Pantry's scope. " +
+  "I can help with Total Concept Kitchens services, timelines, process, and consult steps. " +
+  "For project-specific advice, contact Ethan from the Contact page.";
 
-export const MISE_GREETING_DEFAULT = `Hi! I am Mise — ${MISE_BOT_TAGLINE}. Ask me about timelines, cabinets, counters, the process, or anything kitchen. If I stall, Ethan has the real-world answers.`;
+export const MISE_GREETING_DEFAULT =
+  "Hi! Pantry is the automated assistant for Total Concept Kitchens. " +
+  "Ask about timelines, cabinets, service area, process, or booking. " +
+  "For project-specific advice, contact Ethan directly.";

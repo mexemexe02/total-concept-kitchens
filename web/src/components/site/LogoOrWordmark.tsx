@@ -33,7 +33,7 @@ export function LogoOrWordmark() {
   return (
     <Link
       href="/"
-      className="block shrink-0 rounded-lg ring-1 ring-bronze/15 ring-offset-2 ring-offset-cream transition hover:ring-bronze/35 dark:ring-bronze/25 dark:ring-offset-charcoal"
+      className="block shrink-0"
       aria-label={`${siteConfig.name} home`}
     >
       <span

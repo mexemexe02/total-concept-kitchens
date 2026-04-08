@@ -10,12 +10,16 @@ export const PORTAL_DEFAULTS: PortalSettings = { ...EMPTY_PORTAL_SETTINGS };
 function strOrNull(v: unknown): string | null {
   return typeof v === "string" ? v : null;
 }
+function boolOr(v: unknown, fallback: boolean): boolean {
+  return typeof v === "boolean" ? v : fallback;
+}
 
 function merge(raw: unknown): PortalSettings {
   if (!raw || typeof raw !== "object") return { ...EMPTY_PORTAL_SETTINGS };
   const o = raw as Record<string, unknown>;
   return {
     announcementBanner: strOrNull(o.announcementBanner),
+    chatEnabled: boolOr(o.chatEnabled, true),
     chatGreeting: strOrNull(o.chatGreeting),
     chatFooterNote: strOrNull(o.chatFooterNote),
     updatedAt: strOrNull(o.updatedAt),
@@ -53,6 +57,7 @@ export async function savePortalSettings(data: PortalSettings): Promise<void> {
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const out: PortalSettings = {
     announcementBanner: trimNull(data.announcementBanner),
+    chatEnabled: data.chatEnabled !== false,
     chatGreeting: trimNull(data.chatGreeting),
     chatFooterNote: trimNull(data.chatFooterNote),
     updatedAt: new Date().toISOString(),

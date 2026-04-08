@@ -1,5 +1,111 @@
 # Development log — Total Concept Kitchens
 
+## 2026-04-08 — Live verification: `/api/chat`
+
+### What we checked (dev server on port 3012)
+- **GET `/api/chat`** — returns JSON with `enabled: true` and a non-empty `greeting` (widget bootstrap).
+- **POST `{"message":"hi"}`** — **200**, `source: "greeting"`, reply introduces Pantry and points to contact.
+- **POST `{"message":""}`** — **400**, `error` explains message required.
+- **POST** (service-area style question) — **200**, `source: "faq"` with `faqId` (matches generated bank in this environment).
+
+### Repeat locally
+- Start app: `cd web && npm run dev`
+- In another shell: `cd web && npm run verify:chat-api`
+- Optional: `CHAT_API_BASE=https://your-staging.example npm run verify:chat-api`
+
+**Note:** OpenAI path (`source: openai`) is not asserted here (depends on `OPENAI_API_KEY` and no strong FAQ match). Test that manually if the key is set.
+
+---
+
+## 2026-04-08 — Dev site looked “broken” / unstyled (Next chunk 404s)
+
+### Cause
+- The browser requested `/_next/static/chunks/webpack.js`, `main-app.js`, `app/layout.js`, etc. and got **404**.
+- That usually means **`.next` was deleted or replaced while `next dev` was still running** on port 3012. The old process kept serving HTML that pointed at chunk files that no longer existed, so CSS/JS failed and the page looked unstyled.
+
+### Fix applied (local)
+- Found PID on port 3012 (`Get-NetTCPConnection -LocalPort 3012`), stopped it, then ran `npm run dev` from `web/` so Next rebuilt `.next`.
+
+### How to avoid
+- Before `npm run clean`, **stop** the dev server, **or** use `dev:clean` only when nothing is listening on 3012.
+- If the UI looks raw again: stop dev → `npm run clean` → `npm run dev`.
+
+### Verify
+- DevTools **Network**: `/_next/static/chunks/webpack.js` and `main-app.js` return **200**.
+- Home page shows normal layout and Tailwind styling.
+
+### Follow-up (same day)
+- `cd web && npm run test -- --run` — **12 tests passed**.
+- `cd web && npm run build` — **succeeds** (prebuild regenerated FAQ JSON as usual).
+- Dev server on 3012 still **Ready**; Next may log `HEAD .../webpack.js 404` for probes without the `?v=` query — normal; full GET with query from HTML is **200**.
+
+---
+
+## 2026-04-08 — Pantry hardening: greeting router, portal toggle, FAQ expansion
+
+### Why
+- Testers reported silly off-topic replies and no easy owner kill-switch for chat.
+- We needed a reliable way to verify whether replies came from FAQ or OpenAI.
+
+### What shipped
+- **`web/src/lib/pantry-chat-router.ts`** + test — routes short greetings (`hi`, `hello`, etc.) to a fixed Pantry intro with contact guidance.
+- **`web/src/app/api/chat/route.ts`** — added `source: "greeting"` path, stronger OpenAI system rules (scope-limited, off-topic refusal + redirect), lower temperature (`0.4`), and dev-only warning logs for non-OK/empty/exception OpenAI responses.
+- **Portal toggle:** `chatEnabled` added across settings model/defaults/persistence (`mise-types`, `portal-defaults`, `portal-mutable-keys`, `portal-settings`, portal settings API). `PortalClient` now has an enable checkbox under Pantry settings.
+- **Public behavior:** root layout renders chat widget only when `chatEnabled !== false`; `/api/chat` returns `source: "disabled"` and skips FAQ/OpenAI when disabled.
+- **Pantry naming/copy:** bot identity text updated in `mise-personality`; portal labels updated from “Mise” to “Pantry” in chat sections.
+- **Debug proof path:** `MiseChatWidget` can show `source` when `NEXT_PUBLIC_CHAT_DEBUG=true`; `.env.example` documents the flag.
+- **FAQ expansion:** `generate-mise-faq.mjs` extended with additional consult/off-topic clusters and guaranteed filler block; regenerated **`web/src/data/mise-faq.json`** to **620 rows**.
+
+### Verify
+- `cd web && npm run test -- --run` — **12 tests passed** (includes new `pantry-chat-router` tests).
+- `cd web && npm run build` — succeeds; `/api/chat` and `/api/portal/*` routes compile cleanly.
+- Manual checks:
+  - `/portal` → toggle Pantry off → widget hidden from public pages and `/api/chat` returns disabled source.
+  - `POST /api/chat` with `hi` returns greeting source.
+  - With `NEXT_PUBLIC_CHAT_DEBUG=true`, widget shows backend source tag (`faq/openai/fallback/greeting/disabled`).
+
+---
+
+## 2026-04-08 — Dark mode: root tokens + `DarkModeSync`
+
+### Problem
+- `body` always used cream `--background` from `:root`; `html.dark` never updated CSS variables, so many areas looked “not really dark.”
+- Inline `dark` script did not run after Next.js **client** navigations, so `dark:` utilities could stay off.
+
+### Fix
+- **`globals.css`:** `html.dark { color-scheme: dark; --background: #1c1b19; --foreground: #f7f5f0; }` so the page canvas matches dark sections.
+- **`DarkModeSync`:** client component (Suspense in root layout) mirrors the same rules as the inline script on route/search change + `prefers-color-scheme` changes.
+
+---
+
+## 2026-04-08 — Dark mode preview URL (`?dark=1`)
+
+### Why
+- Cursor’s embedded browser cannot toggle “Emulate prefers-color-scheme: dark” like Chrome DevTools, and a light OS never activates Tailwind’s old default `media` dark variant.
+
+### Changes
+- **`tailwind.config.ts`:** `darkMode: "class"` — `dark:` applies when `<html>` has class `dark`.
+- **`app/layout.tsx`:** Inline script in `<head>` (before paint): `?dark=1` adds `dark` on `<html>`; `?dark=0` forces light; otherwise `prefers-color-scheme: dark` adds `dark` (same behavior as before for dark OS users). `suppressHydrationWarning` on `<html>` for the class mismatch.
+
+### Verify
+- **http://localhost:3012/?dark=1** — force dark on a light OS. **http://localhost:3012/?dark=0** — force light on a dark OS.
+
+---
+
+## 2026-04-06 — Header + logo: always light chrome (dark OS safe)
+
+### Why
+- Official logo must not change colour or use filters; transparent areas were reading wrong on `dark:bg-charcoal` header.
+
+### Changes
+- **`Header`:** Removed `dark:` variants — bar, nav, CTA, and mobile sub-nav stay cream/light styling in all themes. Page body below can still use dark mode.
+- **`LogoOrWordmark` / `BrandWordmark`:** Dropped `dark:` ring-offset and wordmark tweaks so ring halo stays `ring-offset-cream` with the light header.
+
+### Verify
+- DevTools → emulate `prefers-color-scheme: dark` — header and logo should match light appearance; scroll page to confirm dark sections still work.
+
+---
+
 ## 2026-04-05 — Mise custom Q&A (portal + `content/mise-custom-faq.json`)
 
 ### Why

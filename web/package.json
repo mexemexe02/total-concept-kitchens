@@ -13,7 +13,8 @@
     "start:clean": "npm run clean && npm run build && npm run start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify:chat-api": "node scripts/verify-chat-api.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.101.1",

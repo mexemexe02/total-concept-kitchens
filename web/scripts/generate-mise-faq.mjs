@@ -527,8 +527,8 @@ const prefixes = [
   "Quick question: ",
 ];
 const seenQ = new Set(rows.map((r) => r.q));
-const seedCap = Math.min(rows.length, 220);
-for (let i = 0; i < seedCap && rows.length < 560; i++) {
+const seedCap = Math.min(rows.length, 280);
+for (let i = 0; i < seedCap && rows.length < 620; i++) {
   const r = rows[i];
   const pref = prefixes[i % prefixes.length];
   let qq = pref + r.q.charAt(0).toLowerCase() + r.q.slice(1);
@@ -578,7 +578,7 @@ const fillers = [
 ];
 
 for (const topic of fillers) {
-  if (rows.length >= 600) break;
+  if (rows.length >= 660) break;
   push(
     `How does ${BRAND} handle ${topic}?`,
     `${OWNER} explains this during planning and in your written scope so expectations match reality. If your question is urgent, call or email — we prefer clarity over surprises.`,
@@ -604,9 +604,83 @@ for (const c of cities) {
     `Kitchen contractor near ${c}?`,
     `Custom cabinets in ${c} area?`,
   ]) {
-    if (rows.length >= 600) break;
+    if (rows.length >= 660) break;
     push(phrase, serviceAnswer, ["local", "service-area", c.toLowerCase()]);
   }
+}
+
+const consultTopics = [
+  "What should I bring to the first consult?",
+  "Can I share Pinterest or Instagram inspiration?",
+  "Do you help compare layout options before we commit?",
+  "Can you quote phases separately for budget control?",
+  "Can we plan now and schedule install later?",
+  "Do you handle permit coordination if needed?",
+  "Who is my point of contact during the project?",
+  "How often do we get schedule updates?",
+  "What happens if hidden issues are found after demo?",
+  "Can we keep some existing cabinets and upgrade others?",
+  "Do you coordinate electrician and plumbing timing?",
+  "Do you install customer-supplied appliances?",
+  "Can we do the project in stages to reduce downtime?",
+  "Can you help pick low-maintenance countertop options?",
+  "Do you advise on storage for small kitchens?",
+  "Can you include a pantry pull-out in the plan?",
+  "Do you provide a final walkthrough checklist?",
+  "Do you return for small adjustments after install?",
+  "Can we discuss accessibility and aging-in-place features?",
+  "Do you support condo kitchen renovation constraints?",
+  "Can we plan around a fixed move-in date?",
+  "Do you offer cabinet-only projects without full remodel?",
+  "Can you match new cabinets to existing flooring tones?",
+  "Do you help prioritize upgrades if budget is tight?",
+  "Can we keep using part of the kitchen during work?",
+  "How do you protect floors and nearby rooms?",
+  "Will I get care instructions for new finishes?",
+  "Can you build around unusual wall angles?",
+  "Can you redesign island seating for better traffic flow?",
+  "Do you recommend lighting layers for prep and ambiance?",
+];
+for (const q of consultTopics) {
+  if (rows.length >= 660) break;
+  push(
+    q,
+    `${OWNER} covers this during planning and in your written scope so decisions are clear before work begins. For project-specific advice, share photos on our Contact page and we will guide the best next step.`,
+    ["consult", "planning", "process"],
+  );
+}
+
+const offTopicRedirects = [
+  "Can you give me a recipe for poptarts?",
+  "Can Pantry write my homework?",
+  "Can you help me debug my code?",
+  "Who won the game last night?",
+  "Can you recommend crypto investments?",
+  "Can Pantry provide medical advice?",
+  "Can you predict lottery numbers?",
+  "Can you tell me a long joke?",
+  "Can you help with car repair steps?",
+  "Can you write legal contract terms for me?",
+  "Can you answer tax filing questions?",
+  "Can you generate social media captions for any business?",
+];
+for (const q of offTopicRedirects) {
+  if (rows.length >= 660) break;
+  push(
+    q,
+    `Pantry is focused on ${BRAND} kitchen projects only. I can help with services, timelines, process, and consult prep — for project-specific details contact ${OWNER} from our Contact page.`,
+    ["off-topic", "redirect"],
+  );
+}
+
+let seq = 1;
+while (rows.length < 620) {
+  push(
+    `Pantry planning question ${seq}: what should we confirm before ordering cabinets?`,
+    `${OWNER} confirms measurements, layout, finish choices, and schedule checkpoints before ordering so your project stays predictable. If you want this reviewed for your space, contact us from the Contact page.`,
+    ["planning", "prep", "alt-phrasing"],
+  );
+  seq += 1;
 }
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
