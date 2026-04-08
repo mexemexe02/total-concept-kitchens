@@ -11,7 +11,14 @@ type Props = {
   initialGreeting: string;
   footerNote: string;
 };
-type ChatSource = "faq" | "openai" | "fallback" | "greeting" | "disabled";
+type ChatSource =
+  | "faq"
+  | "openai"
+  | "fallback"
+  | "greeting"
+  | "disabled"
+  | "joke"
+  | "rate_limited";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 

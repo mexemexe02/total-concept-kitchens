@@ -5,11 +5,14 @@
 export const MISE_BOT_NAME = "Pantry";
 export const MISE_BOT_TAGLINE = "Automated website assistant";
 
-/** Short openers prepended to matched FAQ answers for personality (rotated by message hash). */
+/**
+ * Short openers prepended to matched FAQ answers (rotated by message hash).
+ * Wording stays earnest — avoids phrases that could read as mocking if the user was venting or sarcastic.
+ */
 export const MISE_OPENERS = [
   "Great question! ",
   "Happy to help — ",
-  "Love this one — ",
+  "Thanks for asking — ",
   "Here is the straight scoop: ",
   "Good thinking ahead — ",
   "Absolutely — ",

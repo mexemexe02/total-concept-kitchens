@@ -22,6 +22,11 @@ export function PortalClient() {
   const [miseFaqRows, setMiseFaqRows] = useState<MiseFaqEditorRow[]>([]);
   const [miseFaqSaving, setMiseFaqSaving] = useState(false);
   const [miseFaqMsg, setMiseFaqMsg] = useState<string | null>(null);
+  /** Pantry reply-path counts (portal-only API; in-memory per server). */
+  const [chatInsights, setChatInsights] = useState<{
+    totals: Record<string, number>;
+    disclaimer: string;
+  } | null>(null);
 
   const setField = (key: PortalTextKey, value: string) => {
     setForm((f) => ({
@@ -38,9 +43,10 @@ export function PortalClient() {
 
   /** @returns whether the session cookie is valid and settings loaded */
   const load = useCallback(async (): Promise<boolean> => {
-    const [res, resFaq] = await Promise.all([
+    const [res, resFaq, resInsights] = await Promise.all([
       fetch("/api/portal/settings"),
       fetch("/api/portal/mise-faq"),
+      fetch("/api/portal/chat-insights"),
     ]);
     if (res.status === 401) {
       setAuthed(false);
@@ -69,6 +75,18 @@ export function PortalClient() {
       );
     } else {
       setMiseFaqRows([]);
+    }
+    if (resInsights.ok) {
+      const ins = (await resInsights.json()) as {
+        totals?: Record<string, number>;
+        disclaimer?: string;
+      };
+      setChatInsights({
+        totals: ins.totals ?? {},
+        disclaimer: ins.disclaimer ?? "",
+      });
+    } else {
+      setChatInsights(null);
     }
     return true;
   }, []);
@@ -306,6 +324,29 @@ export function PortalClient() {
             <strong className="font-medium text-charcoal dark:text-cream">Pantry custom Q&A</strong>{" "}
             below the main form (separate save).
           </p>
+          {chatInsights ? (
+            <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50/80 px-3 py-3 dark:border-stone-600 dark:bg-stone-900/40">
+              <p className={`${label} !mt-0`}>Pantry usage (this server, since last restart)</p>
+              <p className={hint}>
+                Reply paths only — no visitor messages stored. High <code>openai</code> or{" "}
+                <code>fallback</code> can mean FAQ gaps worth adding to custom Q&A.
+              </p>
+              <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm sm:grid-cols-3">
+                {Object.entries(chatInsights.totals)
+                  .sort(([a], [b]) => a.localeCompare(b))
+                  .map(([k, v]) => (
+                    <div key={k} className="flex justify-between gap-2 border-b border-stone-200/80 py-1 dark:border-stone-600/60">
+                      <dt className="font-mono text-xs text-stone-600 dark:text-stone-400">{k}</dt>
+                      <dd className="font-medium text-charcoal dark:text-cream">{v}</dd>
+                    </div>
+                  ))}
+              </dl>
+              {Object.keys(chatInsights.totals).length === 0 ? (
+                <p className={`${hint} mt-2`}>No chat traffic recorded on this instance yet.</p>
+              ) : null}
+              <p className={`${hint} mt-2`}>{chatInsights.disclaimer}</p>
+            </div>
+          ) : null}
         </div>
 
         <div className={section}>

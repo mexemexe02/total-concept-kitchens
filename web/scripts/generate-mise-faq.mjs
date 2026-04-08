@@ -1,5 +1,5 @@
 /**
- * Builds src/data/mise-faq.json with 500+ Q&A rows for the Mise chatbot.
+ * Builds src/data/mise-faq.json with 600+ Q&A rows for the Pantry chatbot.
  * Run: node scripts/generate-mise-faq.mjs
  * (Also runs automatically via npm prebuild.)
  */
@@ -518,6 +518,140 @@ for (const [q, a, t] of extras) {
   push(q + "?", a, t);
 }
 
+// --- Extra consult / policy / education (2026-04-08+) — avoid inventing shop-specific terms; defer to Ethan in writing where needed.
+const paymentScheduleAns = `Payment timing, deposits, and draws depend on scope and schedule. ${OWNER} puts a clear payment outline in your proposal after the plan is understood — ask on the Contact page if you want a preview of how billing typically works.`;
+push("Do you require a deposit for kitchen work?", paymentScheduleAns, ["payment", "policy"]);
+push("When do I pay for custom cabinets?", paymentScheduleAns, ["payment", "policy"]);
+push("Kitchen remodel payment schedule?", paymentScheduleAns, ["payment", "policy"]);
+
+const consultFeeAns = `Whether the first meeting is complimentary or fee-based can depend on travel and project type. Message through the Contact page — ${OWNER} will set expectations up front.`;
+push("Is the first kitchen consultation free?", consultFeeAns, ["consult", "policy"]);
+push("Do you charge for a design consult?", consultFeeAns, ["consult", "policy"]);
+
+const warrantyAns = `Coverage depends on what is supplied (cabinet manufacturer, hardware, install workmanship). ${OWNER} reviews warranty and service expectations in your contract and walkthrough — ask for written details before work starts.`;
+push("What warranty do you offer on kitchen cabinets?", warrantyAns, ["warranty", "policy"]);
+push("Is installation under warranty?", warrantyAns, ["warranty", "policy"]);
+push("Who covers defects after install?", warrantyAns, ["warranty", "after"]);
+
+const insuranceAns = `Ask ${OWNER} for proof of insurance and how your project is covered before work begins. Homeowners should also confirm coverage with their insurer for larger renovations.`;
+push("Are you insured for kitchen renovations?", insuranceAns, ["insurance", "policy"]);
+push("Do you carry liability insurance?", insuranceAns, ["insurance", "policy"]);
+push("Certificate of insurance for contractors?", insuranceAns, ["insurance", "policy"]);
+
+const minProjectAns = `${BRAND} takes projects that fit the team’s capacity and craft. Describe your scope on the Contact page — ${OWNER} will say honestly if it is the right fit.`;
+push("What is your minimum kitchen project size?", minProjectAns, ["policy", "scope"]);
+push("Do you take small kitchen jobs only?", minProjectAns, ["policy", "scope"]);
+
+const customerSupplyAns = `Sometimes yes, sometimes no — it depends on warranty, fit, and schedule risk. ${OWNER} sets rules in the written scope so everyone knows who is responsible for each item.`;
+push("Can I supply my own countertops?", customerSupplyAns, ["policy", "materials"]);
+push("Can I buy appliances myself and you install?", customerSupplyAns, ["policy", "appliances"]);
+
+const financingAns = `${BRAND} focuses on design and build scope. If financing is important, mention it early — ${OWNER} can discuss typical approaches clients use (without promising third-party terms).`;
+push("Do you offer financing for kitchen remodels?", financingAns, ["payment", "policy"]);
+push("Payment plans for cabinets?", financingAns, ["payment", "policy"]);
+
+push(
+  "Design-build vs hiring a separate designer?",
+  `Design-build keeps drawings, cabinet specs, and site reality aligned — one team owns the outcome. Separate designers can work well when communication with the builder is tight. ${BRAND} operates as an integrated kitchen team; ${OWNER} explains roles at consult.`,
+  ["process", "design"],
+);
+
+push(
+  "What are shop drawings?",
+  `Shop drawings translate the approved design into build details — dimensions, openings, and install notes cabinets are built from. You review critical decisions before fabrication starts.`,
+  ["design", "process"],
+);
+
+push(
+  "Shaker cabinets vs flat slab doors?",
+  `Shaker has a framed panel profile; slab is a flat door front. Shaker is classic and forgiving; slab reads modern and shows every alignment detail. Both work when proportions and hardware suit the style.`,
+  ["cabinets", "style"],
+);
+
+push(
+  "Two-tone kitchen cabinets — good idea?",
+  `Common approach: uppers light, lowers dark (or island different from perimeter). Contrast should feel intentional — we test combinations against flooring and counters so it does not look accidental.`,
+  ["cabinets", "style", "design"],
+);
+
+push(
+  "What is a waterfall countertop edge?",
+  `Stone continues vertically down the sides of an island or cabinet end for a continuous “folded” look. It uses more material and needs precise fabrication — decide early for budgeting.`,
+  ["countertops", "design"],
+);
+
+push(
+  "Is the kitchen work triangle outdated?",
+  `The idea — sink, fridge, cooktop in a workable triangle — still helps traffic flow. Open plans often stretch the triangle; we prioritize fewer crossing paths and safe landing zones over rigid geometry.`,
+  ["layout", "design"],
+);
+
+push(
+  "How high should upper cabinets be?",
+  `Comfortable reach and clearance above counters drive height; taller users or coffee stations may need tweaks. We set uppers after confirming counter thickness, backsplash plan, and crown details.`,
+  ["cabinets", "layout"],
+);
+
+push(
+  "Can I use an undermount sink with laminate counters?",
+  `True undermount usually needs a solid substrate edge (stone, quartz, solid surface). Laminate often uses top-mount or integrated sinks — ${OWNER} confirms what your counter package allows.`,
+  ["sink", "countertops"],
+);
+
+push(
+  "How do I prepare for cabinet measure day?",
+  `Clear counters, move fragile items, and have decision-makers available for questions. Existing appliances that stay should be accessible. Final dimensions lock after this visit — changes later can cost time.`,
+  ["process", "measure"],
+);
+
+push(
+  "What photos help before a consult?",
+  `Wide shots of the full kitchen, photos of problem corners, inspiration images you like (and dislike), and a rough sketch with measurements if you have them. More context means fewer surprises.`,
+  ["consult", "process"],
+);
+
+push(
+  "Matte black vs brass cabinet hardware?",
+  `Both are popular — contrast with door colour matters more than the trend name. We pick finishes that match hinges, lighting metals, and faucet so the kitchen feels cohesive.`,
+  ["hardware", "design"],
+);
+
+push(
+  "Open shelving vs upper cabinets?",
+  `Open shelves feel airy but show dust and clutter. A mix — shelves at the end of a run or near the range — often balances display with storage. We plan what you actually store daily.`,
+  ["storage", "design"],
+);
+
+push(
+  "Steam oven vs wall oven — cabinet planning?",
+  `Steam and combi units need venting, drain, and power per manufacturer specs — often more than a standard single oven. We allocate cabinet depth, adjacent clearances, and service access early.`,
+  ["appliances", "cabinets"],
+);
+
+push(
+  "Kitchen desk or command center — still worth it?",
+  `If you manage mail, charging, and calendars in the kitchen, a slim desk zone can work. If it becomes junk storage, drawers with charging often age better. We design around your habits.`,
+  ["design", "storage"],
+);
+
+push(
+  "How do I reduce noise during a kitchen reno?",
+  `Expect demo and cutting noise during work hours. Discuss quiet hours with ${OWNER} if you have infants or shift work — some tasks can be sequenced, but full silence is not realistic on site.`,
+  ["during", "lifestyle"],
+);
+
+push(
+  "Do you work with interior designers?",
+  `Yes — when a designer is already involved, we coordinate drawings, samples, and install sequencing so the kitchen ties into the wider home. Share contacts early so everyone shares the same specifications.`,
+  ["process", "design"],
+);
+
+push(
+  "Can you match existing trim and moulding?",
+  `Often we can get close with custom profiles or compatible stock. Bring photos and a sample if possible — perfect century-home matches sometimes need custom knives or gradual blending.`,
+  ["cabinets", "trim"],
+);
+
 // Paraphrase layer: same trusted answers, natural alternate questions (helps matching).
 const prefixes = [
   "For homeowners: ",
@@ -578,7 +712,7 @@ const fillers = [
 ];
 
 for (const topic of fillers) {
-  if (rows.length >= 660) break;
+  if (rows.length >= 720) break;
   push(
     `How does ${BRAND} handle ${topic}?`,
     `${OWNER} explains this during planning and in your written scope so expectations match reality. If your question is urgent, call or email — we prefer clarity over surprises.`,
@@ -604,7 +738,7 @@ for (const c of cities) {
     `Kitchen contractor near ${c}?`,
     `Custom cabinets in ${c} area?`,
   ]) {
-    if (rows.length >= 660) break;
+    if (rows.length >= 720) break;
     push(phrase, serviceAnswer, ["local", "service-area", c.toLowerCase()]);
   }
 }
@@ -642,7 +776,7 @@ const consultTopics = [
   "Do you recommend lighting layers for prep and ambiance?",
 ];
 for (const q of consultTopics) {
-  if (rows.length >= 660) break;
+  if (rows.length >= 720) break;
   push(
     q,
     `${OWNER} covers this during planning and in your written scope so decisions are clear before work begins. For project-specific advice, share photos on our Contact page and we will guide the best next step.`,
@@ -665,7 +799,7 @@ const offTopicRedirects = [
   "Can you generate social media captions for any business?",
 ];
 for (const q of offTopicRedirects) {
-  if (rows.length >= 660) break;
+  if (rows.length >= 720) break;
   push(
     q,
     `Pantry is focused on ${BRAND} kitchen projects only. I can help with services, timelines, process, and consult prep — for project-specific details contact ${OWNER} from our Contact page.`,

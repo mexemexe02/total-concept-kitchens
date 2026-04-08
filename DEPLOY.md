@@ -12,6 +12,7 @@ This app is a **Next.js 14** project under `web/`. Production runs as a **Docker
 6. Add **environment variables** in Coolify as needed — **`web/.env.example`** lists:
    - **`NEXT_PUBLIC_TCK_*`** — phone, email, address, hours (paste from Facebook Page → About; Meta blocks scrapers).
    - **Instagram API** vars for the gallery (below).
+   - **Pantry:** `OPENAI_API_KEY` (optional but recommended), `CHAT_RATE_LIMIT_*`, optional `CHAT_METRICS_LOG` — see **Pantry chat** below.
 
 7. **Logo:** add `web/public/brand/logo.png` (Ethan’s page/profile image from [Facebook](https://www.facebook.com/p/Total-Concept-Kitchens-100031038951078/) or [Instagram](https://www.instagram.com/totalconceptkitchens/) — save manually; see `public/brand/README.txt`).
 
@@ -40,6 +41,13 @@ The `/gallery` route uses `revalidate = 3600` (hourly) as a baseline. Without AP
 - **Caching**: For dynamic Next.js pages, avoid aggressive cache rules on HTML; static assets under `/_next/static/` can be cached long-term.
 
 This stack is **Coolify on your server** + **Cloudflare in front** for DNS, WAF, and CDN-style features—not Cloudflare Pages as the Node host.
+
+## Pantry chat (`/api/chat`)
+
+- **Rate limiting:** The app applies an **in-memory** sliding window per client IP (`CHAT_RATE_LIMIT_MAX`, `CHAT_RATE_LIMIT_WINDOW_MS` in `web/.env.example`). It protects OpenAI cost and spam for a **single container replica**. If you run **multiple instances** behind a load balancer, either lower limits per instance or add **proxy-level** rate limiting (e.g. Cloudflare WAF / NGINX) so the cap is global.
+- **Metrics:** Optional `CHAT_METRICS_LOG=true` emits one JSON line per completed chat response (`source` + `durationMs` only; **no** user message text). Point log shipping at stdout if you use an aggregator.
+- **Owner Q&A:** `web/content/mise-custom-faq.json` is editable from **`/portal`** and is matched **before** the big generated FAQ — use it for Ethan-approved payment, warranty, and policy wording.
+- **Portal insights:** Logged-in **`/portal`** loads **`GET /api/portal/chat-insights`** and shows in-memory reply-path totals (faq / openai / fallback / …) so you can spot gaps — same per-process limits as rate limiting; no visitor transcripts.
 
 ## Local Docker check
 

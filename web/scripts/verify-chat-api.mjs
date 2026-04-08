@@ -63,6 +63,21 @@ async function main() {
     console.log("OK POST service-area (source=faq, faqId=%s)", faqJson.faqId);
   }
 
+  const jokeRes = await fetch(`${base}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "tell me a joke" }),
+  });
+  if (!jokeRes.ok) fail(`POST tell me a joke expected 200, got ${jokeRes.status}`);
+  const jokeJson = await jokeRes.json();
+  if (jokeJson.source !== "joke") {
+    fail(`POST joke expected source=joke, got ${jokeJson.source}`);
+  }
+  if (typeof jokeJson.reply !== "string" || jokeJson.reply.length < 30) {
+    fail("POST joke expected a substantive reply");
+  }
+  console.log("OK POST tell me a joke (source=joke)");
+
   console.log("verify-chat-api: all required checks passed.");
 }
 

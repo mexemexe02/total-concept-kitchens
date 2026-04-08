@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": -1,
+    "q": "What is your deposit and payment schedule?",
+    "a": "Payment milestones depend on your scope and are spelled out in your written proposal after the plan is clear. For your specific job, contact Ethan through the Contact page or during your consult — Pantry chat is general guidance only, not a contract.",
+    "tags": ["payment", "policy"]
+  },
+  {
+    "id": -2,
+    "q": "Do you offer a warranty on installation?",
+    "a": "Workmanship and manufacturer coverage are explained in your contract and final walkthrough. Ask Ethan before work starts so you have the exact terms that apply to your project.",
+    "tags": ["warranty", "policy"]
+  },
+  {
+    "id": -3,
+    "q": "Are you insured? Can you send a certificate of insurance?",
+    "a": "Ask Ethan for proof of insurance and how your project is covered before work begins. Homeowners should also confirm coverage with their own insurer for larger renovations.",
+    "tags": ["insurance", "policy"]
+  },
+  {
+    "id": -4,
+    "q": "Is the first consultation free?",
+    "a": "Whether the first meeting is complimentary can depend on travel and project type. Reach out through the Contact page — Ethan will set expectations up front.",
+    "tags": ["consult", "policy"]
+  },
+  {
+    "id": -5,
+    "q": "Can I supply my own appliances or countertops?",
+    "a": "Sometimes yes — it depends on warranty, fit, and schedule risk. Ethan defines what can be owner-supplied in your written scope so responsibilities are clear.",
+    "tags": ["policy", "materials"]
+  },
+  {
+    "id": -6,
+    "q": "Do you offer financing?",
+    "a": "Total Concept Kitchens focuses on design and build scope. If financing matters for you, mention it early — Ethan can discuss typical approaches clients use, without promising third-party terms.",
+    "tags": ["payment", "policy"]
+  },
+  {
+    "id": -7,
+    "q": "What is the smallest kitchen project you take?",
+    "a": "The team takes work that fits capacity and craft. Describe your scope on the Contact page — Ethan will say honestly if it is the right fit.",
+    "tags": ["scope", "policy"]
+  },
+  {
+    "id": -8,
+    "q": "Who pulls permits for a kitchen remodel?",
+    "a": "That depends on your agreement and municipality. Ethan clarifies who coordinates permits and inspections for your job before you commit — do not rely on chat for a binding answer.",
+    "tags": ["permits", "policy"]
+  }
+]

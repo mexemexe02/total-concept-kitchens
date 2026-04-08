@@ -1,5 +1,77 @@
 # Development log — Total Concept Kitchens
 
+## 2026-04-08 — Portal Pantry insights (owner-only)
+
+### Why
+- Completed the “review real chats” loop without storing user messages: Ethan sees **which reply paths** fire (faq vs openai vs fallback, etc.) to decide new custom Q&A.
+
+### What shipped
+- **`GET /api/portal/chat-insights`** — same cookie auth as other portal APIs; returns `getChatReplyTotals()` + disclaimer (per-instance, since restart).
+- **`PortalClient`** — section **2 · Pantry** shows a small **usage** panel when insights load.
+
+---
+
+## 2026-04-08 — High-value Pantry ops: rate limit, metrics, starter custom FAQ
+
+### Rate limiting
+- **`web/src/lib/chat-rate-limit.ts`** — sliding window per client key from `X-Forwarded-For` / `X-Real-IP`; env `CHAT_RATE_LIMIT_MAX` (default 30), `CHAT_RATE_LIMIT_WINDOW_MS` (default 60000), `CHAT_RATE_LIMIT_DISABLED` for tests.
+- **`POST /api/chat`** returns **429** + `source: "rate_limited"` + `Retry-After` when exceeded. In-memory = **per Node process**; `DEPLOY.md` notes multi-replica / proxy limits.
+
+### Metrics
+- **`web/src/lib/chat-metrics.ts`** — increments in-memory totals by `source`; `CHAT_METRICS_LOG=true` logs one JSON line per reply (`event`, `source`, `durationMs` only).
+
+### Starter owner FAQ
+- **`web/content/mise-custom-faq.json`** — eight defer-to-Ethan policy Q&As (editable in portal). **`FAQ_ANSWERS_NEEDED_FROM_OWNER.md`** updated to mention starters.
+
+### Tests
+- `chat-rate-limit.test.ts`, `chat-metrics.test.ts`.
+
+---
+
+## 2026-04-08 — Pantry: no insults; smart handling of visitor sarcasm
+
+### Why
+- Owner wants Pantry to **never insult** customers, but to **notice sarcasm/irony** and respond in a **clever, perceptive** way (without punching back or mocking the visitor).
+
+### What changed
+- **`/api/chat` OpenAI system prompt:** hard rules — no mockery, belittling, passive-aggression, sarcasm **at** the user, “clapback,” or rude mimicry; stay kind if they’re frustrated. Optional **one short** line of warm wit (self-deprecating bot humor or mild reno/kitchen observation) when tone is playful/sarcastic, then **sincere** pivot to TCK help. Joke path: no roasts or humor at the customer’s expense.
+- **`MISE_OPENERS`:** replaced “Love this one —” with “Thanks for asking —” so FAQ matches never sound flippant next to an upset or sarcastic message.
+
+---
+
+## 2026-04-08 — More generated FAQs + owner review checklist
+
+### What changed
+- **`web/scripts/generate-mise-faq.mjs`** — added ~35 clusters (payment/deposit, consult fee, warranty, insurance, min project, customer-supplied items, financing, design-build, shop drawings, door styles, two-tone, waterfall edge, work triangle, uppers height, undermount + laminate, measure prep, consult photos, hardware finishes, open shelving vs uppers, steam oven planning, kitchen desk, noise/quiet hours, working with designers, trim matching). Raised cap **660 → 720** on filler/city/consult/off-topic loops so expansion is not truncated early.
+- **`web/content/FAQ_ANSWERS_NEEDED_FROM_OWNER.md`** — checklist of topics **Ethan should answer or approve** (money, warranty, insurance, scope, lead times, etc.) so we do not invent binding policies in FAQ or OpenAI.
+
+### Regenerate data
+- `cd web && node scripts/generate-mise-faq.mjs` (or `npm run build` via prebuild).
+
+---
+
+## 2026-04-08 — OpenAI path: answer non-FAQ questions, always pivot to TCK
+
+### Why
+- Owner wanted Pantry to **try to answer** questions that don’t hit the FAQ, not only refuse and redirect.
+
+### What changed
+- **`/api/chat`** main OpenAI system prompt (no FAQ match): instruct model to answer **in good faith** when safe/brief, **always** close with services/process/contact and real contact fields from `site-config`; caps ~120 words; stricter blocks for medical/legal/financial/harmful; no invented prices/guarantees. Slightly higher **temperature 0.45** and **max_tokens 360** for room to bridge topics.
+
+---
+
+## 2026-04-08 — Pantry: business-only jokes (`source: joke`)
+
+### Why
+- “Tell me a joke” matched off-topic **FAQ** rows and returned the dry redirect (with a FAQ opener), which felt like the API was “broken.”
+
+### What changed
+- **`isPantryJokeRequest`** + **`cannedBusinessKitchenJoke`** in `pantry-chat-router.ts` — detect joke asks (before FAQ).
+- **`/api/chat`** — joke path **skips FAQ**; calls OpenAI with a strict **kitchen/remodel/trade-only** humor system prompt (`temperature` 0.65); on failure or no API key, returns a **canned** PG one-liner from a small pool.
+- Response **`source: "joke"`** for debug (`MiseChatWidget` union updated). **`verify-chat-api.mjs`** asserts POST `tell me a joke` → `joke`.
+
+---
+
 ## 2026-04-08 — Live verification: `/api/chat`
 
 ### What we checked (dev server on port 3012)
