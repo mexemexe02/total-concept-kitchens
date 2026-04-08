@@ -47,6 +47,7 @@ This stack is **Coolify on your server** + **Cloudflare in front** for DNS, WAF,
 - **Rate limiting:** The app applies an **in-memory** sliding window per client IP (`CHAT_RATE_LIMIT_MAX`, `CHAT_RATE_LIMIT_WINDOW_MS` in `web/.env.example`). It protects OpenAI cost and spam for a **single container replica**. If you run **multiple instances** behind a load balancer, either lower limits per instance or add **proxy-level** rate limiting (e.g. Cloudflare WAF / NGINX) so the cap is global.
 - **Metrics:** Optional `CHAT_METRICS_LOG=true` emits one JSON line per completed chat response (`source` + `durationMs` only; **no** user message text). Point log shipping at stdout if you use an aggregator.
 - **Owner Q&A:** `web/content/mise-custom-faq.json` is editable from **`/portal`** and is matched **before** the big generated FAQ — use it for Ethan-approved payment, warranty, and policy wording.
+- **CRM leads:** `web/content/crm-leads.json` stores the owner’s manual lead list from **`/portal` → Leads** — same writable `content/` volume as portal settings.
 - **Portal insights:** Logged-in **`/portal`** loads **`GET /api/portal/chat-insights`** and shows in-memory reply-path totals (faq / openai / fallback / …) so you can spot gaps — same per-process limits as rate limiting; no visitor transcripts.
 
 ## Local Docker check

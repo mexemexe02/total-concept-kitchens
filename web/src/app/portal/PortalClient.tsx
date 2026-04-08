@@ -8,6 +8,7 @@ type MiseFaqEditorRow = { q: string; a: string; tags: string };
 type PortalTextKey = Exclude<keyof PortalSettings, "chatEnabled" | "updatedAt">;
 import { EMPTY_PORTAL_SETTINGS } from "@/lib/portal-defaults";
 import { PORTAL_MUTABLE_KEYS } from "@/lib/portal-mutable-keys";
+import { PortalCrmSection } from "./PortalCrmSection";
 
 /**
  * Owner portal: edits `content/portal-settings.json` (banner, Pantry, hero, contact,
@@ -202,8 +203,7 @@ export function PortalClient() {
       <div className="rounded-2xl border border-stone-200 bg-white p-8 shadow-sm dark:border-stone-800 dark:bg-charcoal">
         <h1 className="text-xl font-semibold text-charcoal dark:text-cream">Sign in</h1>
         <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
-          Staff portal — edit live site copy (banner, home hero, contact, footer, Pantry, and
-          more). Password is in server{" "}
+          Staff portal — edit live site copy, Pantry, leads (CRM), and more. Password is in server{" "}
           <code className="rounded bg-stone-100 px-1 text-xs dark:bg-stone-800">.env</code>.
         </p>
         <form onSubmit={login} className="mt-6 space-y-4">
@@ -492,6 +492,8 @@ export function PortalClient() {
           {saving ? "Saving…" : "Save all changes"}
         </button>
       </form>
+
+      <PortalCrmSection />
 
       <form
         onSubmit={saveMiseFaq}

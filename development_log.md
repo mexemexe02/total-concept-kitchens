@@ -1,5 +1,22 @@
 # Development log — Total Concept Kitchens
 
+## 2026-04-08 — Portal simple CRM (`content/crm-leads.json`)
+
+### What shipped
+- **`web/content/crm-leads.json`** — append-only style storage (max 500 rows) for manual leads.
+- **`web/src/lib/crm-types.ts`**, **`crm-leads.ts`** — types + parse/save helpers.
+- **`GET/POST/PATCH/DELETE /api/portal/crm`** — portal cookie auth; PATCH updates fields; DELETE `?id=`.
+- **`PortalCrmSection.tsx`** — add form + list with status dropdown, blur-to-save fields, remove. Replaced the old dashed “reserved” placeholder block.
+- **`DEPLOY.md`** — note `crm-leads.json` needs writable `content/`.
+
+---
+
+## 2026-04-08 — Portal: reserved “Leads & visitors” (2b) — superseded
+
+- Earlier placeholder section; replaced by **simple CRM** (see entry above). Pantry still does not auto-create CRM rows.
+
+---
+
 ## 2026-04-08 — Portal Pantry insights (owner-only)
 
 ### Why
